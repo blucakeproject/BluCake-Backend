@@ -14,8 +14,6 @@ import javax.persistence.Table;
 
 import br.com.blucake.api.enums.PerfilEnum;
 import br.com.blucake.api.utils.SenhaUtils;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +31,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "usuario")
 public class Usuario implements Serializable {
-   
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -43,33 +41,37 @@ public class Usuario implements Serializable {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "senha", updatable = false)
     private String senha;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "perfil")
-    private PerfilEnum perfil;
-
-    @Column(name = "nomeContato")
-    private String nomeContato;
-
-    @Column(name = "telefoneCelular")
-    private String telefone1;
-
-    @Column(name = "telefoneCelular2")
-    private String telefone2;
-
-    @Column(name = "telefoneFixo")
-    private String telefoneFixo;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "rg")
     private String rg;
 
     @Column(name = "cpf")
     private String cpf;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "perfil")
+    private PerfilEnum perfil;
+
+    @Column(name = "telefoneCelular")
+    private String telefoneCelular;
+
+    @Column(name = "telefoneFixo")
+    private String telefoneFixo;
+
+    /* Endereço */
+    @Column(name = "cep")
+    private String cep;
+
+    @Column(name = "estado")
+    private String estado;
+
+    @Column(name = "cidade")
+    private String cidade;
 
     @Column(name = "rua")
     private String rua;
@@ -83,24 +85,17 @@ public class Usuario implements Serializable {
     @Column(name = "bairro")
     private String bairro;
 
-    @Column(name = "cidade")
-    private String cidade;
+    @OneToMany(mappedBy = "usuario")
+    private List<Receita> receitas;
 
-    @Column(name = "estado")
-    private String estado;
-
-    @Column(name = "cep")
-    private String cep;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dataContrato")
-    private Date dataContrato;
+    @OneToMany(mappedBy = "usuario")
+    private List<Ingrediente> ingredientes;
 
     @Column(name = "dataCriacao", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date dataCriacao;
-    
+
     @Column(name = "dataAtualizacao")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
@@ -117,15 +112,13 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, String email, String senha, PerfilEnum perfil, String nomeContato, String telefone1, String telefone2, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataContrato) {
+    public Usuario(Long id, String nome, String email, String senha, PerfilEnum perfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = SenhaUtils.gerarBCrypt(senha);
         this.perfil = perfil;
-        this.nomeContato = nomeContato;
-        this.telefone1 = telefone1;
-        this.telefone2 = telefone2;
+        this.telefoneCelular = telefoneCelular;
         this.telefoneFixo = telefoneFixo;
         this.rg = rg;
         this.cpf = cpf;
@@ -136,18 +129,15 @@ public class Usuario implements Serializable {
         this.cidade = cidade;
         this.estado = estado;
         this.cep = cep;
-        this.dataContrato = dataContrato;
     }
 
-    public Usuario(Long id, String nome, String email, String senha, PerfilEnum perfil, String nomeContato, String telefone1, String telefone2, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataContrato, Date dataCriacao, Date dataAtualizacao, String usuarioCriacao, String usuarioAtualizacao) {
+    public Usuario(Long id, String nome, String email, String senha, PerfilEnum perfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataCriacao, Date dataAtualizacao, String usuarioCriacao, String usuarioAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.perfil = perfil;
-        this.nomeContato = nomeContato;
-        this.telefone1 = telefone1;
-        this.telefone2 = telefone2;
+        this.telefoneCelular = telefoneCelular;
         this.telefoneFixo = telefoneFixo;
         this.rg = rg;
         this.cpf = cpf;
@@ -158,24 +148,19 @@ public class Usuario implements Serializable {
         this.cidade = cidade;
         this.estado = estado;
         this.cep = cep;
-        this.dataContrato = dataContrato;
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
         this.usuarioCriacao = usuarioCriacao;
         this.usuarioAtualizacao = usuarioAtualizacao;
     }
-    
-    
-    
+
     public Usuario(UsuarioDTO obj) {
         this.id = obj.getId();
         this.nome = obj.getNome();
         this.email = obj.getEmail();
         this.perfil = obj.getPerfil();
-        this.senha = obj.getSenha();        
-        this.nomeContato = obj.getNomeContato();
-        this.telefone1 = obj.getTelefone1();
-        this.telefone2 = obj.getTelefone2();
+        this.senha = obj.getSenha();
+        this.telefoneCelular = obj.getTelefoneCelular();
         this.telefoneFixo = obj.getTelefoneFixo();
         this.rg = obj.getRg();
         this.cpf = obj.getCpf();
@@ -186,22 +171,20 @@ public class Usuario implements Serializable {
         this.cidade = obj.getCidade();
         this.estado = obj.getEstado();
         this.cep = obj.getCep();
-        this.dataContrato = obj.getDataContrato();
         this.dataAtualizacao = obj.getDataAtualizacao();
         this.dataCriacao = obj.getDataCriacao();
         this.usuarioCriacao = obj.getUsuarioCriacao();
         this.usuarioAtualizacao = obj.getUsuarioAtualizacao();
     }
-    
-    private String obterSenhaCrypt(UsuarioDTO obj){
-    
-        if(obj.getId() == null){
+
+    private String obterSenhaCrypt(UsuarioDTO obj) {
+
+        if (obj.getId() == null) {
             return SenhaUtils.gerarBCrypt(obj.getSenha());
-        }else{
+        } else {
             return obj.getSenha();
-        }    
+        }
     }
-       
 
     public Long getId() {
         return id;
@@ -243,28 +226,12 @@ public class Usuario implements Serializable {
         this.perfil = perfil;
     }
 
-    public String getNomeContato() {
-        return nomeContato;
+    public String getTelefoneCelular() {
+        return telefoneCelular;
     }
 
-    public void setNomeContato(String nomeContato) {
-        this.nomeContato = nomeContato;
-    }
-
-    public String getTelefone1() {
-        return telefone1;
-    }
-
-    public void setTelefone1(String telefone1) {
-        this.telefone1 = telefone1;
-    }
-
-    public String getTelefone2() {
-        return telefone2;
-    }
-
-    public void setTelefone2(String telefone2) {
-        this.telefone2 = telefone2;
+    public void setTelefoneCelular(String telefoneCelular) {
+        this.telefoneCelular = telefoneCelular;
     }
 
     public String getTelefoneFixo() {
@@ -347,14 +314,6 @@ public class Usuario implements Serializable {
         this.cep = cep;
     }
 
-    public Date getDataContrato() {
-        return dataContrato;
-    }
-
-    public void setDataContrato(Date dataContrato) {
-        this.dataContrato = dataContrato;
-    }
-
     public Date getDataCriacao() {
         return dataCriacao;
     }
@@ -394,6 +353,22 @@ public class Usuario implements Serializable {
         return hash;
     }
 
+    public List<Receita> getReceitas() {
+        return receitas;
+    }
+
+    public void setReceitas(List<Receita> receitas) {
+        this.receitas = receitas;
+    }
+
+    public List<Ingrediente> getIngredientes() {
+        return ingredientes;
+    }
+
+    public void setIngredientes(List<Ingrediente> ingredientes) {
+        this.ingredientes = ingredientes;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -411,7 +386,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "Usuario{" + "id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", perfil=" + perfil + ", nomeContato=" + nomeContato + ", telefone1=" + telefone1 + ", telefone2=" + telefone2 + ", telefoneFixo=" + telefoneFixo + ", rg=" + rg + ", cpf=" + cpf + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + '}';
+        return "Usuario{" + "id=" + id + ", nome=" + nome + ", senha=" + senha + ", email=" + email + ", rg=" + rg + ", cpf=" + cpf + ", perfil=" + perfil + ", telefoneCelular=" + telefoneCelular + ", telefoneFixo=" + telefoneFixo + ", cep=" + cep + ", estado=" + estado + ", cidade=" + cidade + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento + ", bairro=" + bairro + ", receitas=" + receitas + ", ingredientes=" + ingredientes + ", dataCriacao=" + dataCriacao + ", dataAtualizacao=" + dataAtualizacao + ", usuarioCriacao=" + usuarioCriacao + ", usuarioAtualizacao=" + usuarioAtualizacao + '}';
     }
 
 }

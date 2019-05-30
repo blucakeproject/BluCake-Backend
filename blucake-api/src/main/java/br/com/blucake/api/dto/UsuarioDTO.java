@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.blucake.api.dto;
 
 import br.com.blucake.api.enums.PerfilEnum;
@@ -28,11 +23,7 @@ public class UsuarioDTO {
 
     private String dsPerfil;
 
-    private String nomeContato;
-
-    private String telefone1;
-
-    private String telefone2;
+    private String telefoneCelular;
 
     private String telefoneFixo;
 
@@ -54,8 +45,6 @@ public class UsuarioDTO {
 
     private String cep;
 
-    private Date dataContrato;
-
     private Date dataCriacao;
 
     private Date dataAtualizacao;
@@ -67,18 +56,14 @@ public class UsuarioDTO {
     public UsuarioDTO() {
     }
 
-
-    
-    public UsuarioDTO(Long id, String nome, String email, PerfilEnum perfil, String senha, String dsPerfil, String nomeContato, String telefone1, String telefone2, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataContrato, Date dataCriacao, Date dataAtualizacao) {
+    public UsuarioDTO(Long id, String nome, String email, PerfilEnum perfil, String senha, String dsPerfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataCriacao, Date dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.perfil = perfil;
         this.senha = senha;
         this.dsPerfil = dsPerfil;
-        this.nomeContato = nomeContato;
-        this.telefone1 = telefone1;
-        this.telefone2 = telefone2;
+        this.telefoneCelular = telefoneCelular;
         this.telefoneFixo = telefoneFixo;
         this.rg = rg;
         this.cpf = cpf;
@@ -89,10 +74,9 @@ public class UsuarioDTO {
         this.cidade = cidade;
         this.estado = estado;
         this.cep = cep;
-        this.dataContrato = dataContrato;
         this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
-        
+
     }
 
     public UsuarioDTO(Usuario obj) {
@@ -102,9 +86,7 @@ public class UsuarioDTO {
         this.perfil = obj.getPerfil();
         this.senha = obj.getSenha();
         this.dsPerfil = this.getDsPerfil();
-        this.nomeContato = obj.getNomeContato();
-        this.telefone1 = obj.getTelefone1();
-        this.telefone2 = obj.getTelefone2();
+        this.telefoneCelular = obj.getTelefoneCelular();
         this.telefoneFixo = obj.getTelefoneFixo();
         this.rg = obj.getRg();
         this.cpf = obj.getCpf();
@@ -115,7 +97,6 @@ public class UsuarioDTO {
         this.cidade = obj.getCidade();
         this.estado = obj.getEstado();
         this.cep = obj.getCep();
-        this.dataContrato = obj.getDataContrato();
         this.dataAtualizacao = obj.getDataAtualizacao();
         this.dataCriacao = obj.getDataCriacao();
         this.usuarioCriacao = obj.getUsuarioCriacao();
@@ -182,28 +163,12 @@ public class UsuarioDTO {
         this.senha = senha;
     }
 
-    public String getNomeContato() {
-        return nomeContato;
+    public String getTelefoneCelular() {
+        return telefoneCelular;
     }
 
-    public void setNomeContato(String nomeContato) {
-        this.nomeContato = nomeContato;
-    }
-
-    public String getTelefone1() {
-        return telefone1;
-    }
-
-    public void setTelefone1(String telefone1) {
-        this.telefone1 = telefone1;
-    }
-
-    public String getTelefone2() {
-        return telefone2;
-    }
-
-    public void setTelefone2(String telefone2) {
-        this.telefone2 = telefone2;
+    public void setTelefoneCelular(String telefoneCelular) {
+        this.telefoneCelular = telefoneCelular;
     }
 
     public String getTelefoneFixo() {
@@ -286,14 +251,6 @@ public class UsuarioDTO {
         this.cep = cep;
     }
 
-    public Date getDataContrato() {
-        return dataContrato;
-    }
-
-    public void setDataContrato(Date dataContrato) {
-        this.dataContrato = dataContrato;
-    }
-
     public Date getDataCriacao() {
         return dataCriacao;
     }
@@ -325,8 +282,6 @@ public class UsuarioDTO {
     public void setUsuarioAtualizacao(String usuarioAtualizacao) {
         this.usuarioAtualizacao = usuarioAtualizacao;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -355,7 +310,7 @@ public class UsuarioDTO {
 
     @Override
     public String toString() {
-        return "UsuarioDTO{" + "id=" + id + ", nome=" + nome + ", email=" + email + ", perfil=" + perfil + ", senha=" + senha + ", dsPerfil=" + dsPerfil + ", nomeContato=" + nomeContato + ", telefone1=" + telefone1 + ", telefone2=" + telefone2 + ", telefoneFixo=" + telefoneFixo + ", rg=" + rg + ", cpf=" + cpf + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + '}';
+        return "UsuarioDTO{" + "id=" + id + ", nome=" + nome + ", email=" + email + ", perfil=" + perfil + ", senha=" + senha + ", dsPerfil=" + dsPerfil + ", telefoneCelular=" + telefoneCelular + ", telefoneFixo=" + telefoneFixo + ", rg=" + rg + ", cpf=" + cpf + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", dataCriacao=" + dataCriacao + ", dataAtualizacao=" + dataAtualizacao + ", usuarioCriacao=" + usuarioCriacao + ", usuarioAtualizacao=" + usuarioAtualizacao + '}';
     }
 
 }

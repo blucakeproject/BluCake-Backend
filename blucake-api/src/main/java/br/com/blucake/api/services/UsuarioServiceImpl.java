@@ -1,6 +1,5 @@
 package br.com.blucake.api.services;
 
-import br.com.blucake.api.dto.UsuarioDTO;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ public class UsuarioServiceImpl implements  UsuarioService{
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+        @Override
 	public Optional<Usuario> buscarPorEmail(String email) {
 		return Optional.ofNullable(this.usuarioRepository.findByEmail(email));
 	}

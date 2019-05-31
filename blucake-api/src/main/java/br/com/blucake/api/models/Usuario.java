@@ -91,6 +91,9 @@ public class Usuario implements Serializable {
     @OneToMany(mappedBy = "usuario")
     private List<Ingrediente> ingredientes;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<EmailEnviado> emailEnviados;
+
     @Column(name = "dataCriacao", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate

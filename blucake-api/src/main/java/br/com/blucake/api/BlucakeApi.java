@@ -9,7 +9,6 @@ import br.com.blucake.api.enums.PerfilEnum;
 
 import br.com.blucake.api.models.Usuario;
 
-
 import br.com.blucake.api.repositorios.UsuarioRepository;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,23 +19,18 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class BlucakeApi implements CommandLineRunner {
 
-  
     @Autowired
     UsuarioRepository usuarioRepository;
-
-   
-            
 
     public static void main(String[] args) {
         SpringApplication.run(BlucakeApi.class, args);
     }
 
     @Override
-    public void run(String... args) throws Exception { 
-        
+    public void run(String... args) throws Exception {
+
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");        
 //         Calendar calendar = Calendar.getInstance();
-        
 //        Usuario user1;
 //        user1 = new Usuario(null, 
 //                "blucake",

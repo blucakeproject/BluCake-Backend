@@ -77,7 +77,7 @@ public class Usuario implements Serializable {
     private String rua;
 
     @Column(name = "numero")
-    private Long numero;
+    private int numero;
 
     @Column(name = "complemento")
     private String complemento;
@@ -90,6 +90,9 @@ public class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "usuario")
     private List<Ingrediente> ingredientes;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<EmailEnviado> emailEnviados;
 
     @Column(name = "dataCriacao", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -112,7 +115,7 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, String email, String senha, PerfilEnum perfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep) {
+    public Usuario(Long id, String nome, String email, String senha, PerfilEnum perfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, int numero, String complemento, String bairro, String cidade, String estado, String cep) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -131,7 +134,7 @@ public class Usuario implements Serializable {
         this.cep = cep;
     }
 
-    public Usuario(Long id, String nome, String email, String senha, PerfilEnum perfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataCriacao, Date dataAtualizacao, String usuarioCriacao, String usuarioAtualizacao) {
+    public Usuario(Long id, String nome, String email, String senha, PerfilEnum perfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, int numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataCriacao, Date dataAtualizacao, String usuarioCriacao, String usuarioAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -266,12 +269,20 @@ public class Usuario implements Serializable {
         this.rua = rua;
     }
 
-    public Long getNumero() {
+    public int getNumero() {
         return numero;
     }
 
-    public void setNumero(Long numero) {
+    public void setNumero(int numero) {
         this.numero = numero;
+    }
+
+    public List<EmailEnviado> getEmailEnviados() {
+        return emailEnviados;
+    }
+
+    public void setEmailEnviados(List<EmailEnviado> emailEnviados) {
+        this.emailEnviados = emailEnviados;
     }
 
     public String getComplemento() {

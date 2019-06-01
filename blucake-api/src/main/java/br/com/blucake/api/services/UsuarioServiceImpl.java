@@ -27,4 +27,8 @@ public class UsuarioServiceImpl implements  UsuarioService{
         public Usuario addUsuario(Usuario user){            
             return this.usuarioRepository.save(user);       
         }
+        
+        public Optional<Usuario> buscarPorId(Long id){
+            return this.usuarioRepository.findById(id);
+        }
 }

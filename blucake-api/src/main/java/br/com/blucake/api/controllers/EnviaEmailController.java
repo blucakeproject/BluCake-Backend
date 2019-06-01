@@ -1,9 +1,7 @@
 package br.com.blucake.api.controllers;
 
 import br.com.blucake.api.dto.EnviaEmailDTO;
-import br.com.blucake.api.dto.UsuarioDTO;
 import br.com.blucake.api.models.Response;
-import br.com.blucake.api.models.Usuario;
 import br.com.blucake.api.services.UsuarioServiceImpl;
 import br.com.blucake.api.utils.EnviaEmail;
 import org.springframework.beans.factory.annotation.Autowired;

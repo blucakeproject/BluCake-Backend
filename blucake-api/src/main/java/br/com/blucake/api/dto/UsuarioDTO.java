@@ -33,7 +33,7 @@ public class UsuarioDTO {
 
     private String rua;
 
-    private Long numero;
+    private int numero;
 
     private String complemento;
 
@@ -56,7 +56,7 @@ public class UsuarioDTO {
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(Long id, String nome, String email, PerfilEnum perfil, String senha, String dsPerfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, Long numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataCriacao, Date dataAtualizacao) {
+    public UsuarioDTO(Long id, String nome, String email, PerfilEnum perfil, String senha, String dsPerfil, String telefoneCelular, String telefoneFixo, String rg, String cpf, String rua, int numero, String complemento, String bairro, String cidade, String estado, String cep, Date dataCriacao, Date dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -203,11 +203,11 @@ public class UsuarioDTO {
         this.rua = rua;
     }
 
-    public Long getNumero() {
+    public int getNumero() {
         return numero;
     }
 
-    public void setNumero(Long numero) {
+    public void setNumero(int numero) {
         this.numero = numero;
     }
 

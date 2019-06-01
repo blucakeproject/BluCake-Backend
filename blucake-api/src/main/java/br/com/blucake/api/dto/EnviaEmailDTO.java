@@ -10,6 +10,7 @@ public class EnviaEmailDTO {
 
     private String destEmail;
     private String destNome;
+    private Long idUsuario;
     private String remetEmail;
     private String remetNome;
     // Tipo 1 - Solicação de Novo Confeiteiro
@@ -23,9 +24,10 @@ public class EnviaEmailDTO {
     public EnviaEmailDTO() {
     }
 
-    public EnviaEmailDTO(String destEmail, String destNome, String remetEmail, String remetNome, int tipoEnvio, String nomeBolo, String telefone, String assunto, String mensagem) {
+    public EnviaEmailDTO(String destEmail, String destNome, Long idUsuario, String remetEmail, String remetNome, int tipoEnvio, String nomeBolo, String telefone, String assunto, String mensagem) {
         this.destEmail = destEmail;
         this.destNome = destNome;
+        this.idUsuario = idUsuario;
         this.remetEmail = remetEmail;
         this.remetNome = remetNome;
         this.tipoEnvio = tipoEnvio;
@@ -49,6 +51,14 @@ public class EnviaEmailDTO {
 
     public void setDestNome(String destNome) {
         this.destNome = destNome;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getRemetEmail() {
@@ -109,7 +119,7 @@ public class EnviaEmailDTO {
 
     @Override
     public String toString() {
-        return "EnviaEmailDTO{" + "destEmail=" + destEmail + ", destNome=" + destNome + ", remetEmail=" + remetEmail + ", remetNome=" + remetNome + ", tipoEnvio=" + tipoEnvio + ", nomeBolo=" + nomeBolo + ", telefone=" + telefone + ", assunto=" + assunto + ", mensagem=" + mensagem + '}';
+        return "EnviaEmailDTO{" + "destEmail=" + destEmail + ", destNome=" + destNome + ", idUsuario=" + idUsuario + ", remetEmail=" + remetEmail + ", remetNome=" + remetNome + ", tipoEnvio=" + tipoEnvio + ", nomeBolo=" + nomeBolo + ", telefone=" + telefone + ", assunto=" + assunto + ", mensagem=" + mensagem + '}';
     }
 
 }

@@ -5,7 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.blucake.api.enums.PerfilEnum;
+import br.com.blucake.api.models.Receita;
 import br.com.blucake.api.models.Usuario;
+import br.com.blucake.api.repositorios.ReceitaRepository;
 import br.com.blucake.api.repositorios.UsuarioRepository;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +20,9 @@ public class BlucakeApi implements CommandLineRunner {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    ReceitaRepository receitaRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(BlucakeApi.class, args);
     }
@@ -27,6 +32,7 @@ public class BlucakeApi implements CommandLineRunner {
 
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 //        Calendar calendar = Calendar.getInstance();
+
         Usuario user1;
         user1 = new Usuario(null,
                 "admin",
@@ -44,7 +50,16 @@ public class BlucakeApi implements CommandLineRunner {
                 "Blumenau",
                 "SC",
                 "8915000");
-
         usuarioRepository.save(user1);
+
+        Receita receita;
+        receita = new Receita(null,
+                "Bolo de Chocolate",
+                "Boleto vegetariano de Chocolate",
+                20.0,
+                null,
+                null,
+                1L);
+        receitaRepository.save(receita);
     }
 }

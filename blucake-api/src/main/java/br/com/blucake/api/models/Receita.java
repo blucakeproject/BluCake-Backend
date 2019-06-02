@@ -17,7 +17,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.NumberFormat;
 
 /**
  *
@@ -30,7 +29,7 @@ public class Receita implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column
     private String nome;
@@ -41,7 +40,7 @@ public class Receita implements Serializable {
     @Column
     private Double preco;
 
-    @Column
+    @Column(nullable = true)
     private String imagem;
 
     @Column
@@ -52,6 +51,10 @@ public class Receita implements Serializable {
     @OneToMany(mappedBy = "receita")
     private List<IngredienteReceita> ingredienteReceitas;
 
+    @Column()
+    @OneToMany(mappedBy = "receita")
+    private List<EmailEnviado> emailEnviados;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
@@ -59,22 +62,25 @@ public class Receita implements Serializable {
     public Receita() {
     }
 
-    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<IngredienteReceita> ingredienteReceitas, Usuario usuario) {
+    public Receita(Long id) {
+        this.id = id;
+    }
+
+    public Receita(Long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, Long idUsuario) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.imagem = imagem;
         this.dataCadastro = dataCadastro;
-        this.ingredienteReceitas = ingredienteReceitas;
-        this.usuario = usuario;
+        this.usuario = new Usuario(idUsuario);
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -126,6 +132,14 @@ public class Receita implements Serializable {
         this.ingredienteReceitas = ingredienteReceitas;
     }
 
+    public List<EmailEnviado> getEmailEnviados() {
+        return emailEnviados;
+    }
+
+    public void setEmailEnviados(List<EmailEnviado> emailEnviados) {
+        this.emailEnviados = emailEnviados;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -135,33 +149,8 @@ public class Receita implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + (int) (this.id ^ (this.id >>> 32));
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Receita other = (Receita) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
-        return "Receita{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagem=" + imagem + ", dataCadastro=" + dataCadastro + ", ingredienteReceitas=" + ingredienteReceitas + ", usuario=" + usuario + '}';
+        return "Receita{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagem=" + imagem + ", dataCadastro=" + dataCadastro + ", ingredienteReceitas=" + ingredienteReceitas + ", emailEnviados=" + emailEnviados + ", usuario=" + usuario + '}';
     }
 
 }

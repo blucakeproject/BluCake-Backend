@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.blucake.api.dto.JwtAuthenticationDto;
 import br.com.blucake.api.dto.TokenDto;
 import br.com.blucake.api.models.Response;
+import br.com.blucake.api.services.UsuarioService;
+import br.com.blucake.api.services.UsuarioServiceImpl;
 import br.com.blucake.api.utils.JwtTokenUtil;
 import java.util.HashMap;
 import org.springframework.http.HttpHeaders;
@@ -47,6 +49,9 @@ public class AuthenticationController {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private UsuarioServiceImpl usuarioServiceImpl;
 
     /**
      * Gera e retorna um novo token JWT.
@@ -77,7 +82,11 @@ public class AuthenticationController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationDto.getEmail());
         String token = jwtTokenUtil.obterToken(userDetails);
         response.setData(new TokenDto(token));
+        
+        
 
+        response.setUsuario(usuarioServiceImpl.buscarPorEmail(userDetails.getUsername()));
+        
         return ResponseEntity.ok(response);
     }
 

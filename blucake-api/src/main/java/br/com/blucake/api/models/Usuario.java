@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import br.com.blucake.api.enums.PerfilEnum;
 import br.com.blucake.api.utils.SenhaUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -85,9 +86,11 @@ public class Usuario implements Serializable {
     @Column(name = "bairro")
     private String bairro;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Receita> receitas;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Ingrediente> ingredientes;
 

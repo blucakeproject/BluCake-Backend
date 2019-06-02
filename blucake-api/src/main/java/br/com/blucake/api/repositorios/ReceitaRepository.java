@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author Lucas Jansen
+ * @author Leandro Prado
  */
 @Repository
-@Transactional(readOnly = true)
-public interface ReceitaRepository extends JpaRepository <Receita, Long> {
-
+@Transactional(readOnly = true )
+public interface ReceitaRepository extends JpaRepository <Receita, Long >{
+    
 }

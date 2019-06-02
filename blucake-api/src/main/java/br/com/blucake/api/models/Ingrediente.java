@@ -1,5 +1,10 @@
 package br.com.blucake.api.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,6 +30,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  *
  * @author Lucas Jansen
  */
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "ingrediente")
@@ -30,7 +38,7 @@ public class Ingrediente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long ingrediente_id;
 
     @Column
     private String nome;
@@ -40,8 +48,9 @@ public class Ingrediente implements Serializable {
     @CreatedDate
     private Date dataCadatro;
 
-    @OneToMany(mappedBy = "ingrediente")
-    private List<IngredienteReceita> ingredienteReceitas;
+   @JsonIgnore
+    @ManyToMany(mappedBy = "ingrediente")
+    private List<Receita> receitas;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -50,22 +59,27 @@ public class Ingrediente implements Serializable {
     public Ingrediente() {
     }
 
+    public Ingrediente(String nome, Usuario usuario) {
+        this.nome = nome;
+        this.usuario = usuario;
+    }   
+
     public Ingrediente(String nome) {
         this(null, nome, null);
     }
 
     public Ingrediente(Long id, String nome, Date dataCadatro) {
-        this.id = id;
+        this.ingrediente_id = id;
         this.nome = nome;
         this.dataCadatro = dataCadatro;
     }
 
     public Long getId() {
-        return id;
+        return ingrediente_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.ingrediente_id = id;
     }
 
     public String getNome() {
@@ -84,13 +98,13 @@ public class Ingrediente implements Serializable {
         this.dataCadatro = dataCadatro;
     }
 
-    public List<IngredienteReceita> getIngredienteReceitas() {
-        return ingredienteReceitas;
+    public List<Receita> getReceitas() {
+        return receitas;
     }
 
-    public void setIngredienteReceitas(List<IngredienteReceita> ingredienteReceitas) {
-        this.ingredienteReceitas = ingredienteReceitas;
-    }
+    public void setReceitas(List<Receita> receitas) {
+        this.receitas = receitas;
+    };
 
     public Usuario getUsuario() {
         return usuario;
@@ -103,7 +117,7 @@ public class Ingrediente implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.id);
+        hash = 97 * hash + Objects.hashCode(this.ingrediente_id);
         return hash;
     }
 
@@ -119,12 +133,9 @@ public class Ingrediente implements Serializable {
             return false;
         }
         final Ingrediente other = (Ingrediente) obj;
-        return Objects.equals(this.id, other.id);
+        return Objects.equals(this.ingrediente_id, other.ingrediente_id);
     }
 
-    @Override
-    public String toString() {
-        return "Ingrediente{" + "id=" + id + ", nome=" + nome + ", dataCadatro=" + dataCadatro + ", ingredienteReceitas=" + ingredienteReceitas + ", usuario=" + usuario + '}';
-    }
+   
 
 }

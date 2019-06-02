@@ -30,6 +30,9 @@ public class BlucakeApi implements CommandLineRunner {
     @Autowired
     ReceitaRepository receitaRepository;
 
+    @Autowired
+    ReceitaRepository receitaRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(BlucakeApi.class, args);
     }
@@ -39,6 +42,7 @@ public class BlucakeApi implements CommandLineRunner {
 
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 //        Calendar calendar = Calendar.getInstance();
+
         Usuario user1;
         user1 = new Usuario(null,
                 "admin",
@@ -56,11 +60,10 @@ public class BlucakeApi implements CommandLineRunner {
                 "Blumenau",
                 "SC",
                 "8915000");
-
         usuarioRepository.save(user1);
         
         Ingrediente in1 = new Ingrediente("Morango", user1);
-       Ingrediente in2 = new Ingrediente("Trigo", user1);
+        Ingrediente in2 = new Ingrediente("Trigo", user1);
         Ingrediente in3 = new Ingrediente("ração", user1);
 //        Ingrediente in4 = new Ingrediente("ddfd", user1);
 //        Ingrediente in5 = new Ingrediente("Morawefwngo", user1);
@@ -87,7 +90,7 @@ public class BlucakeApi implements CommandLineRunner {
 //        Ingrediente in26 = new Ingrediente("Morfeefango", user1);
         
         ingrendienteRepository.save(in1);        
-       ingrendienteRepository.save(in2);
+        ingrendienteRepository.save(in2);
         ingrendienteRepository.save(in3);
 //        ingrendienteRepository.save(in4);
 //        ingrendienteRepository.save(in5);
@@ -113,12 +116,11 @@ public class BlucakeApi implements CommandLineRunner {
 //        ingrendienteRepository.save(in25);
 //        ingrendienteRepository.save(in25);
         
-        
         List<Ingrediente> listaIngre = new ArrayList<>();
         listaIngre.add(in1);
-       listaIngre.add(in2);
+        listaIngre.add(in2);
        
-       List<Ingrediente> listaIngre2 = new ArrayList<>();
+        List<Ingrediente> listaIngre2 = new ArrayList<>();
         listaIngre2.add(in3);
         listaIngre2.add(in2);
 //        listaIngre.add(in5);

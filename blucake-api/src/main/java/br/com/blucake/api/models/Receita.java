@@ -24,7 +24,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.NumberFormat;
 
 /**
  *
@@ -49,7 +48,7 @@ public class Receita implements Serializable {
     @Column
     private Double preco;
 
-    @Column
+    @Column(nullable = true)
     private String imagem;
 
     @Column
@@ -63,11 +62,19 @@ public class Receita implements Serializable {
                  inverseJoinColumns = @JoinColumn(name="ingrediente_id"))   
     private List<Ingrediente> ingrediente;
 
+    @Column()
+    @OneToMany(mappedBy = "receita")
+    private List<EmailEnviado> emailEnviados;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     public Receita() {
+    }
+
+    public Receita(Long id) {
+        this.id = id;
     }
 
     public Receita(String nome, String descricao, Double preco, String imagem, List<Ingrediente> ingrediente, Usuario usuario) {
@@ -78,8 +85,6 @@ public class Receita implements Serializable {
         this.ingrediente = ingrediente;
         this.usuario = usuario;
     }
-    
-    
 
     public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Usuario usuario) {
         this.receita_id = id;
@@ -88,6 +93,7 @@ public class Receita implements Serializable {
         this.preco = preco;
         this.imagem = imagem;
         this.dataCadastro = dataCadastro;
+        this.usuario = new Usuario(idUsuario);
         this.ingrediente = ingrediente;
         this.usuario = usuario;
     }
@@ -148,6 +154,14 @@ public class Receita implements Serializable {
         this.ingrediente = ingredienteReceitas;
     }
 
+    public List<EmailEnviado> getEmailEnviados() {
+        return emailEnviados;
+    }
+
+    public void setEmailEnviados(List<EmailEnviado> emailEnviados) {
+        this.emailEnviados = emailEnviados;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -156,6 +170,10 @@ public class Receita implements Serializable {
         this.usuario = usuario;
     }
 
+    @Override
+    public String toString() {
+        return "Receita{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagem=" + imagem + ", dataCadastro=" + dataCadastro + ", ingredienteReceitas=" + ingredienteReceitas + ", emailEnviados=" + emailEnviados + ", usuario=" + usuario + '}';
+    }
     @Override
     public int hashCode() {
         int hash = 5;
@@ -180,7 +198,5 @@ public class Receita implements Serializable {
         }
         return true;
     }
-
-    
 
 }

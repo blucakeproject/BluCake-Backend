@@ -21,15 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class EnviaEmailController {
 
     @Autowired
-    UsuarioServiceImpl usuarioServiceImpl;
-
-    @Autowired
     EnviaEmail enviaEmail;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Response> enviarEmail(@RequestBody EnviaEmailDTO email) {
-        Response response = new Response(enviaEmail.enviar(email));
+        Boolean b = enviaEmail.enviar(email);
+        Response response = new Response(b);
         return ResponseEntity.ok().body(response);
     }
 }

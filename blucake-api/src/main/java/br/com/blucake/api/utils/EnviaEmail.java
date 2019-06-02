@@ -2,14 +2,14 @@ package br.com.blucake.api.utils;
 
 import br.com.blucake.api.dto.EnviaEmailDTO;
 import br.com.blucake.api.models.EmailEnviado;
-import br.com.blucake.api.models.Usuario;
 import br.com.blucake.api.services.EmailEnviadoServiceImpl;
 import br.com.blucake.api.services.UsuarioServiceImpl;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Optional;
+import java.util.Date;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,17 +28,13 @@ public class EnviaEmail {
     private UsuarioServiceImpl usuarioServiceImpl;
 
     private final String smtp = "smtp.gmail.com";
-    private final String portaSmtp = "587";
+    private final Integer portaSmtp = 587;
     private final String usuarioSmtp = "projetoblucake@gmail.com";
     private final String senhaUsuarioSmtp = "blucake2019";
-    private final DefaultAuthenticator autenticador = new DefaultAuthenticator(usuarioSmtp, senhaUsuarioSmtp);
-    private final SimpleEmail email = new SimpleEmail();
-
-    private String msg;
-    private String assunto;
+    private DefaultAuthenticator autenticador;
+    private HtmlEmail email;
 
     public EnviaEmail() {
-        
     }
 
     private boolean validaEnvio(EnviaEmailDTO emailDTO) {
@@ -48,62 +44,95 @@ public class EnviaEmail {
             return !(emailDTO.getRemetEmail().trim().isEmpty() || emailDTO.getRemetNome().trim().isEmpty());
         }
         return !(emailDTO.getDestEmail().trim().isEmpty() || emailDTO.getDestNome().trim().isEmpty()
-                || emailDTO.getRemetEmail().trim().isEmpty() || emailDTO.getRemetNome().trim().isEmpty()
-                || emailDTO.getMensagem().trim().isEmpty());
+                || emailDTO.getRemetEmail().trim().isEmpty() || emailDTO.getRemetNome().trim().isEmpty());
     }
 
-    public boolean enviar(EnviaEmailDTO emailDTO) {
-
+    public Boolean enviar(EnviaEmailDTO emailDTO) {
+        autenticador = new DefaultAuthenticator(usuarioSmtp, senhaUsuarioSmtp);
+        email = new HtmlEmail();
         if (validaEnvio(emailDTO)) {
             try {
                 email.setHostName(smtp);
-                email.setSmtpPort(Integer.getInteger(portaSmtp));
+                email.setSmtpPort(portaSmtp);
                 email.setAuthenticator(autenticador);
                 email.setTLS(true);
                 if (emailDTO.getTipoEnvio() == 1) {
-                    email.setFrom(usuarioSmtp);
-                    assunto = "Solicitação de Cadastro de Novo Confeiteiro";
-
-                    msg = "Novo interessado em ser Confeiteiro no BluCake!<br/><br/>"
-                            + "Nome: <b>" + emailDTO.getRemetNome().trim() + "</b><br/>"
+                    emailDTO.setDestEmail(usuarioSmtp);
+                    emailDTO.setAssunto("Solicitação de Cadastro de Novo Confeiteiro");
+                    emailDTO.setMensagem(
+                            "Novo interessado em ser Confeiteiro no BluCake!<br/><br/>"
+                            + "Nome: <b>" + emailDTO.getRemetNome().trim().toUpperCase() + "</b><br/>"
                             + "Email: " + emailDTO.getRemetEmail() + "<br/><br/>"
-                            + "Entrar em contato para coletar mais informações!";
+                            + "Entrar em contato para coletar mais informações!");
                 } else {
-                    email.setFrom(emailDTO.getDestEmail().trim());
-                    assunto = emailDTO.getRemetNome().trim() + " - Novo Interessado";
-
-                    msg = "Prezado(a) <b>" + emailDTO.getDestNome().trim() + "</b>,<br/> " + "&emsp;<b>" + emailDTO.getRemetNome().trim()
-                            + "</b> está interessado no bolo <b>" + emailDTO.getNomeBolo().trim() + "</b> e lhe enviou uma mensagem.<br/><br/>"
+                    emailDTO.setAssunto(emailDTO.getRemetNome().trim() + " - Novo Interessado");
+                    if (emailDTO.getMensagem() == null) {
+                        emailDTO.setMensagem("<i>Nao foi deixado nenhuma mensagem!</i>");
+                    }
+                    if (emailDTO.getTelefone() == null || emailDTO.getTelefone().trim().equals("")) {
+                        emailDTO.setTelefone("<i>Sem telefone de Contato!</i>");
+                    }
+                    String msg = "Prezado(a) <b>" + emailDTO.getDestNome().trim() + "</b>,<br/><br/> " + "<b>" + emailDTO.getRemetNome().trim().toUpperCase()
+                            + "</b> está interessado em <b>" + emailDTO.getNomeReceita().trim().toUpperCase() + "</b> e lhe enviou uma mensagem.<br/><br/>"
                             + "----------- Mensagem -----------<br/>"
                             + emailDTO.getMensagem() + "<br/><br/> Telefone de Contato: " + emailDTO.getTelefone().trim() + "<br/>"
-                            + "&emsp;<b><i>Enviado por BluCake</i></b><br/>";
+                            + "<br/>&emsp;<b><i>Enviado por BluCake</i></b>";
+                    emailDTO.setMensagem(msg);
                 }
 
-                email.addTo(emailDTO.getRemetEmail().trim());
-                email.setSubject(assunto);
-                email.setMsg(msg);
+                email.setFrom(emailDTO.getRemetEmail().trim());
+                email.addTo(emailDTO.getDestEmail().trim());
+                email.setSubject(emailDTO.getAssunto());
+//                email.setMsg(emailDTO.getMensagem());
+                email.setHtmlMsg(emailDTO.getMensagem());
                 email.send();
             } catch (EmailException e) {
                 System.err.println("EnviaEmail - Falha ao enviar email para: " + emailDTO.getDestEmail().trim()
                         + " | Erro: " + e.toString());
-                gravaEnvio(emailDTO.getIdUsuario());
+                gravaEnvio(false, emailDTO);
                 return false;
             }
-
+            gravaEnvio(true, emailDTO);
             return true;
+        } else {
+            gravaEnvio(false, emailDTO);
+            return false;
         }
-        return false;
     }
 
-    private void gravaEnvio(Long usuarioId) {
+    private void gravaEnvio(boolean enviado, EnviaEmailDTO emailDTO) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         Calendar calendar = Calendar.getInstance();
+        EmailEnviado emailEnviado;
 
-        EmailEnviado emailEnviado = new EmailEnviado(null,
-                email.getHostName(),
-                email.getSubject(),
-                smtp, smtp, 0, smtp, smtp, assunto, msg, true, usuarioId, calendar.getTime());
+        if (emailDTO.getTipoEnvio() == 1) {
+            emailEnviado = new EmailEnviado(
+                    emailDTO.getDestEmail(),
+                    emailDTO.getRemetEmail(),
+                    emailDTO.getRemetNome(),
+                    emailDTO.getTipoEnvio(),
+                    emailDTO.getAssunto(),
+                    emailDTO.getMensagem(),
+                    enviado,
+                    calendar.getTime());
+        } else {
+            emailEnviado = new EmailEnviado(
+                    null,
+                    emailDTO.getDestEmail().trim(),
+                    emailDTO.getDestNome().trim(),
+                    emailDTO.getRemetEmail().trim(),
+                    emailDTO.getRemetNome().trim(),
+                    emailDTO.getTipoEnvio(),
+                    emailDTO.getTelefone().trim(),
+                    emailDTO.getAssunto().trim(),
+                    emailDTO.getMensagem().trim(),
+                    enviado,
+                    emailDTO.getIdReceita(),
+                    emailDTO.getNomeReceita(),
+                    emailDTO.getIdUsuario(),
+                    calendar.getTime());
+        }
 
         emailEnviadoService.gravaEmailEnviado(emailEnviado);
     }

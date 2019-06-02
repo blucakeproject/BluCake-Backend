@@ -21,22 +21,21 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  *
  * @author Lucas Jansen
  */
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "ingrediente_receita")
+//@Entity
+//@EntityListeners(AuditingEntityListener.class)
+//@Table(name = "ingrediente_receita");
 public class IngredienteReceita implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_ingrediente")
-    private Ingrediente ingrediente;
+    
+    
+    private Ingrediente ingrediente_id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_receita")
-    private Receita receita;
+    
+    private Receita receita_id;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
@@ -52,19 +51,19 @@ public class IngredienteReceita implements Serializable {
     }
 
     public Ingrediente getIngrediente() {
-        return ingrediente;
+        return ingrediente_id;
     }
 
     public void setIngrediente(Ingrediente ingrediente) {
-        this.ingrediente = ingrediente;
+        this.ingrediente_id = ingrediente;
     }
 
     public Receita getReceita() {
-        return receita;
+        return receita_id;
     }
 
     public void setReceita(Receita receita) {
-        this.receita = receita;
+        this.receita_id = receita;
     }
 
     public Date getDataCadastro() {
@@ -100,9 +99,6 @@ public class IngredienteReceita implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "IngredienteReceita{" + "id=" + id + ", ingrediente=" + ingrediente + ", receita=" + receita + ", dataCadastro=" + dataCadastro + '}';
-    }
+  
 
 }

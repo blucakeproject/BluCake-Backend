@@ -3,53 +3,64 @@ package br.com.blucake.api.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class Response<T> {
 
-	private T data;
+    private T data;
 
-	private List<String> erros;
+    private List<String> erros;
 
-	private HashMap<?, ?> dadosMap;
+    private HashMap<?, ?> dadosMap;
 
-	public Response(List<String> erros, HashMap<?, ?> dadosMap) {
-		this.erros = erros;
-		this.dadosMap = dadosMap;
-	}
+    private Optional<Usuario> usuario;
 
-	public Response(T data) {
-		this.data = data;
-	}
+    public Response(List<String> erros, HashMap<?, ?> dadosMap) {
+        this.erros = erros;
+        this.dadosMap = dadosMap;
+    }
 
-	public Response() {
+    public Response(T data) {
+        this.data = data;
+    }
 
-	}
+    public Response() {
 
-	public T getData() {
-		return data;
-	}
+    }
 
-	public void setData(T data) {
-		this.data = data;
-	}
+    public T getData() {
+        return data;
+    }
 
-	public List<String> getErros() {
-		if (this.erros == null) {
-			this.erros = new ArrayList<String>();
-		}
-		return erros;
-	}
+    public void setData(T data) {
+        this.data = data;
+    }
 
-	public void setErros(List<String> erros) {
-		this.erros = erros;
-	}
+    public List<String> getErros() {
+        if (this.erros == null) {
+            this.erros = new ArrayList<String>();
+        }
+        return erros;
+    }
 
-	public HashMap<?, ?> getDadosMap() {
-		return dadosMap;
-	}
+    public void setErros(List<String> erros) {
+        this.erros = erros;
+    }
 
-	public void setDadosMap(HashMap<?, ?> dadosMap) {
-		this.dadosMap = dadosMap;
-	}
+    public HashMap<?, ?> getDadosMap() {
+        return dadosMap;
+    }
+
+    public void setDadosMap(HashMap<?, ?> dadosMap) {
+        this.dadosMap = dadosMap;
+    }
+
+    public Optional<Usuario> getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Optional<Usuario> usuario) {
+        this.usuario = usuario;
+    }
 
 }

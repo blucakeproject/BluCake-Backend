@@ -1,5 +1,10 @@
 package br.com.blucake.api.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,6 +30,7 @@ import org.springframework.format.annotation.NumberFormat;
  *
  * @author Lucas Jansen
  */
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "receita")
@@ -30,7 +38,7 @@ public class Receita implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long receita_id;
 
     @Column
     private String nome;
@@ -48,9 +56,12 @@ public class Receita implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date dataCadastro;
-
-    @OneToMany(mappedBy = "receita")
-    private List<IngredienteReceita> ingredienteReceitas;
+        
+    @ManyToMany
+    @JoinTable( name= "ingrediente_receita",
+                 joinColumns =@JoinColumn(name="receita_id"),
+                 inverseJoinColumns = @JoinColumn(name="ingrediente_id"))   
+    private List<Ingrediente> ingrediente;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -59,23 +70,34 @@ public class Receita implements Serializable {
     public Receita() {
     }
 
-    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<IngredienteReceita> ingredienteReceitas, Usuario usuario) {
-        this.id = id;
+    public Receita(String nome, String descricao, Double preco, String imagem, List<Ingrediente> ingrediente, Usuario usuario) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.imagem = imagem;
+        this.ingrediente = ingrediente;
+        this.usuario = usuario;
+    }
+    
+    
+
+    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Usuario usuario) {
+        this.receita_id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.imagem = imagem;
         this.dataCadastro = dataCadastro;
-        this.ingredienteReceitas = ingredienteReceitas;
+        this.ingrediente = ingrediente;
         this.usuario = usuario;
     }
 
     public long getId() {
-        return id;
+        return receita_id;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.receita_id = id;
     }
 
     public String getNome() {
@@ -118,12 +140,12 @@ public class Receita implements Serializable {
         this.dataCadastro = dataCadastro;
     }
 
-    public List<IngredienteReceita> getIngredienteReceitas() {
-        return ingredienteReceitas;
+    public List<Ingrediente> getIngredienteReceitas() {
+        return ingrediente;
     }
 
-    public void setIngredienteReceitas(List<IngredienteReceita> ingredienteReceitas) {
-        this.ingredienteReceitas = ingredienteReceitas;
+    public void setIngredienteReceitas(List<Ingrediente> ingredienteReceitas) {
+        this.ingrediente = ingredienteReceitas;
     }
 
     public Usuario getUsuario() {
@@ -137,7 +159,7 @@ public class Receita implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 89 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 89 * hash + (int) (this.receita_id ^ (this.receita_id >>> 32));
         return hash;
     }
 
@@ -153,15 +175,12 @@ public class Receita implements Serializable {
             return false;
         }
         final Receita other = (Receita) obj;
-        if (this.id != other.id) {
+        if (this.receita_id != other.receita_id) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Receita{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagem=" + imagem + ", dataCadastro=" + dataCadastro + ", ingredienteReceitas=" + ingredienteReceitas + ", usuario=" + usuario + '}';
-    }
+    
 
 }

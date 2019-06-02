@@ -30,9 +30,6 @@ public class BlucakeApi implements CommandLineRunner {
     @Autowired
     ReceitaRepository receitaRepository;
 
-    @Autowired
-    ReceitaRepository receitaRepository;
-
     public static void main(String[] args) {
         SpringApplication.run(BlucakeApi.class, args);
     }

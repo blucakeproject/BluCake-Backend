@@ -1,10 +1,5 @@
 package br.com.blucake.api.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -55,11 +50,11 @@ public class Receita implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date dataCadastro;
-        
+
     @ManyToMany
-    @JoinTable( name= "ingrediente_receita",
-                 joinColumns =@JoinColumn(name="receita_id"),
-                 inverseJoinColumns = @JoinColumn(name="ingrediente_id"))   
+    @JoinTable(name = "ingrediente_receita",
+            joinColumns = @JoinColumn(name = "receita_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingrediente_id"))
     private List<Ingrediente> ingrediente;
 
     @Column()
@@ -73,8 +68,8 @@ public class Receita implements Serializable {
     public Receita() {
     }
 
-    public Receita(Long id) {
-        this.id = id;
+    public Receita(Long receita_id) {
+        this.receita_id = receita_id;
     }
 
     public Receita(String nome, String descricao, Double preco, String imagem, List<Ingrediente> ingrediente, Usuario usuario) {
@@ -86,7 +81,7 @@ public class Receita implements Serializable {
         this.usuario = usuario;
     }
 
-    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Usuario usuario) {
+    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Long idUsuario) {
         this.receita_id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -172,8 +167,9 @@ public class Receita implements Serializable {
 
     @Override
     public String toString() {
-        return "Receita{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagem=" + imagem + ", dataCadastro=" + dataCadastro + ", ingredienteReceitas=" + ingredienteReceitas + ", emailEnviados=" + emailEnviados + ", usuario=" + usuario + '}';
+        return "Receita{" + "receita_id=" + receita_id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagem=" + imagem + ", dataCadastro=" + dataCadastro + ", ingrediente=" + ingrediente + ", emailEnviados=" + emailEnviados + ", usuario=" + usuario + '}';
     }
+
     @Override
     public int hashCode() {
         int hash = 5;

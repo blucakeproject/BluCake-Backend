@@ -15,6 +15,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.sql.Clob;
+import javax.persistence.Lob;
 
 /**
  *
@@ -43,11 +45,8 @@ public class EmailEnviado implements Serializable {
 
     // Tipo 1 - Solicação de Novo Confeiteiro
     // Tipo 2 - Contato com o Confeiteiro por Interesse no Bolo
-    @Column
+    @Column(length = 1)
     private int tipoEnvio;
-
-    @Column
-    private String nomeBolo;
 
     @Column
     private String telefone;
@@ -56,10 +55,18 @@ public class EmailEnviado implements Serializable {
     private String assunto;
 
     @Column
+    @Lob
     private String mensagem;
 
     @Column
     private boolean enviado;
+
+    @ManyToOne
+    @JoinColumn(name = "id_receita")
+    private Receita receita;
+
+    @Column
+    private String nomeReceita;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -74,19 +81,34 @@ public class EmailEnviado implements Serializable {
 
     }
 
-    public EmailEnviado(Long id, String destEmail, String destNome, String remetEmail, String remetNome, int tipoEnvio, String nomeBolo, String telefone, String assunto, String mensagem, boolean enviado, Long usuario, Date dataEnvio) {
+    public EmailEnviado(String destEmail, String remetEmail, String remetNome, 
+            int tipoEnvio, String assunto, String mensagem, boolean enviado, Date dataEnvio) {
+        this.destEmail = destEmail;
+        this.remetEmail = remetEmail;
+        this.remetNome = remetNome;
+        this.tipoEnvio = tipoEnvio;
+        this.assunto = assunto;
+        this.mensagem = mensagem;
+        this.enviado = enviado;
+        this.dataEnvio = dataEnvio;
+    }
+
+    public EmailEnviado(Long id, String destEmail, String destNome, String remetEmail,
+            String remetNome, int tipoEnvio, String telefone, String assunto, String mensagem,
+            boolean enviado, Long idReceita, String nomeReceita, Long idUsuario, Date dataEnvio) {
         this.id = id;
         this.destEmail = destEmail;
         this.destNome = destNome;
         this.remetEmail = remetEmail;
         this.remetNome = remetNome;
         this.tipoEnvio = tipoEnvio;
-        this.nomeBolo = nomeBolo;
         this.telefone = telefone;
         this.assunto = assunto;
         this.mensagem = mensagem;
         this.enviado = enviado;
-        this.usuario.setId(usuario);
+        this.receita = new Receita(idReceita);
+        this.nomeReceita = nomeReceita;
+        this.usuario = new Usuario(idUsuario);
         this.dataEnvio = dataEnvio;
     }
 
@@ -138,14 +160,6 @@ public class EmailEnviado implements Serializable {
         this.tipoEnvio = tipoEnvio;
     }
 
-    public String getNomeBolo() {
-        return nomeBolo;
-    }
-
-    public void setNomeBolo(String nomeBolo) {
-        this.nomeBolo = nomeBolo;
-    }
-
     public String getTelefone() {
         return telefone;
     }
@@ -178,6 +192,22 @@ public class EmailEnviado implements Serializable {
         this.enviado = enviado;
     }
 
+    public Receita getReceita() {
+        return receita;
+    }
+
+    public void setReceita(Receita receita) {
+        this.receita = receita;
+    }
+
+    public String getNomeReceita() {
+        return nomeReceita;
+    }
+
+    public void setNomeReceita(String nomeReceita) {
+        this.nomeReceita = nomeReceita;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -196,7 +226,7 @@ public class EmailEnviado implements Serializable {
 
     @Override
     public String toString() {
-        return "EmailEnviado{" + "id=" + id + ", destEmail=" + destEmail + ", destNome=" + destNome + ", remetEmail=" + remetEmail + ", remetNome=" + remetNome + ", tipoEnvio=" + tipoEnvio + ", nomeBolo=" + nomeBolo + ", telefone=" + telefone + ", assunto=" + assunto + ", mensagem=" + mensagem + ", enviado=" + enviado + ", usuario=" + usuario + ", dataEnvio=" + dataEnvio + '}';
+        return "EmailEnviado{" + "id=" + id + ", destEmail=" + destEmail + ", destNome=" + destNome + ", remetEmail=" + remetEmail + ", remetNome=" + remetNome + ", tipoEnvio=" + tipoEnvio + ", telefone=" + telefone + ", assunto=" + assunto + ", mensagem=" + mensagem + ", enviado=" + enviado + ", receita=" + receita + ", usuario=" + usuario + ", dataEnvio=" + dataEnvio + '}';
     }
 
 }

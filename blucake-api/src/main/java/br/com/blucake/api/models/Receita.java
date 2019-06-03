@@ -1,10 +1,5 @@
 package br.com.blucake.api.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +19,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.NumberFormat;
 
 /**
  *
@@ -49,25 +43,33 @@ public class Receita implements Serializable {
     @Column
     private Double preco;
 
-    @Column
+    @Column(nullable = true)
     private String imagem;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date dataCadastro;
-        
+
     @ManyToMany
-    @JoinTable( name= "ingrediente_receita",
-                 joinColumns =@JoinColumn(name="receita_id"),
-                 inverseJoinColumns = @JoinColumn(name="ingrediente_id"))   
+    @JoinTable(name = "ingrediente_receita",
+            joinColumns = @JoinColumn(name = "receita_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingrediente_id"))
     private List<Ingrediente> ingrediente;
+
+    @Column()
+    @OneToMany(mappedBy = "receita")
+    private List<EmailEnviado> emailEnviados;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     public Receita() {
+    }
+
+    public Receita(Long receita_id) {
+        this.receita_id = receita_id;
     }
 
     public Receita(String nome, String descricao, Double preco, String imagem, List<Ingrediente> ingrediente, Usuario usuario) {
@@ -78,16 +80,15 @@ public class Receita implements Serializable {
         this.ingrediente = ingrediente;
         this.usuario = usuario;
     }
-    
-    
 
-    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Usuario usuario) {
+    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Long idUsuario) {
         this.receita_id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.imagem = imagem;
         this.dataCadastro = dataCadastro;
+        this.usuario = new Usuario(idUsuario);
         this.ingrediente = ingrediente;
         this.usuario = usuario;
     }
@@ -148,12 +149,25 @@ public class Receita implements Serializable {
         this.ingrediente = ingredienteReceitas;
     }
 
+    public List<EmailEnviado> getEmailEnviados() {
+        return emailEnviados;
+    }
+
+    public void setEmailEnviados(List<EmailEnviado> emailEnviados) {
+        this.emailEnviados = emailEnviados;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    @Override
+    public String toString() {
+        return "Receita{" + "receita_id=" + receita_id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagem=" + imagem + ", dataCadastro=" + dataCadastro + ", ingrediente=" + ingrediente + ", emailEnviados=" + emailEnviados + ", usuario=" + usuario + '}';
     }
 
     @Override
@@ -180,7 +194,5 @@ public class Receita implements Serializable {
         }
         return true;
     }
-
-    
 
 }

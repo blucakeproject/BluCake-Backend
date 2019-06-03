@@ -16,7 +16,8 @@ public class EnviaEmailDTO {
     // Tipo 1 - Solicação de Novo Confeiteiro
     // Tipo 2 - Contato com o Confeiteiro por Interesse no Bolo
     private int tipoEnvio;
-    private String nomeBolo;
+    private Long idReceita;
+    private String nomeReceita;
     private String telefone;
     private String assunto;
     private String mensagem;
@@ -24,14 +25,15 @@ public class EnviaEmailDTO {
     public EnviaEmailDTO() {
     }
 
-    public EnviaEmailDTO(String destEmail, String destNome, Long idUsuario, String remetEmail, String remetNome, int tipoEnvio, String nomeBolo, String telefone, String assunto, String mensagem) {
+    public EnviaEmailDTO(String destEmail, String destNome, Long idUsuario, String remetEmail,
+            String remetNome, int tipoEnvio, Long idReceita, String telefone, String assunto, String mensagem) {
         this.destEmail = destEmail;
         this.destNome = destNome;
         this.idUsuario = idUsuario;
         this.remetEmail = remetEmail;
         this.remetNome = remetNome;
         this.tipoEnvio = tipoEnvio;
-        this.nomeBolo = nomeBolo;
+        this.idReceita = idReceita;
         this.telefone = telefone;
         this.assunto = assunto;
         this.mensagem = mensagem;
@@ -85,12 +87,20 @@ public class EnviaEmailDTO {
         this.tipoEnvio = tipoEnvio;
     }
 
-    public String getNomeBolo() {
-        return nomeBolo;
+    public Long getIdReceita() {
+        return idReceita;
     }
 
-    public void setNomeBolo(String nomeBolo) {
-        this.nomeBolo = nomeBolo;
+    public void setIdReceita(Long idReceita) {
+        this.idReceita = idReceita;
+    }
+
+    public String getNomeReceita() {
+        return nomeReceita;
+    }
+
+    public void setNomeReceita(String nomeReceita) {
+        this.nomeReceita = nomeReceita;
     }
 
     public String getTelefone() {
@@ -119,7 +129,7 @@ public class EnviaEmailDTO {
 
     @Override
     public String toString() {
-        return "EnviaEmailDTO{" + "destEmail=" + destEmail + ", destNome=" + destNome + ", idUsuario=" + idUsuario + ", remetEmail=" + remetEmail + ", remetNome=" + remetNome + ", tipoEnvio=" + tipoEnvio + ", nomeBolo=" + nomeBolo + ", telefone=" + telefone + ", assunto=" + assunto + ", mensagem=" + mensagem + '}';
+        return "EnviaEmailDTO{" + "destEmail=" + destEmail + ", destNome=" + destNome + ", idUsuario=" + idUsuario + ", remetEmail=" + remetEmail + ", remetNome=" + remetNome + ", tipoEnvio=" + tipoEnvio + ", idReceita=" + idReceita + ", nomeReceita=" + nomeReceita + ", telefone=" + telefone + ", assunto=" + assunto + ", mensagem=" + mensagem + '}';
     }
 
 }

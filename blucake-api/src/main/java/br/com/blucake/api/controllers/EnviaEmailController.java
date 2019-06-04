@@ -23,8 +23,7 @@ public class EnviaEmailController {
     @Autowired
     EnviaEmail enviaEmail;
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PostMapping  
     public ResponseEntity<Response> enviarEmail(@RequestBody EnviaEmailDTO email) {
         Boolean b = enviaEmail.enviar(email);
         Response response = new Response(b);

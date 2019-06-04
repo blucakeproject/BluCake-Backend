@@ -130,9 +130,9 @@ public class BlucakeApi implements CommandLineRunner {
 //        listaIngre.add(in20);
         
         
-        Receita receita1 = new Receita("Bolo1", "BLOOOOO11", 35.00, "",listaIngre, user1);
+        Receita receita1 = new Receita("Bolo1", "BLOOOOO11", 35.00, "https://www.nestleprofessional.com.br/sites/g/files/gfb331/f/styles/recipe/public/media/bolo-trufado-charge.jpg?itok=rgzHVFs1",listaIngre, user1);
         
-        Receita receita2 = new Receita("Bolo222", "BLOOOOO11", 35.00, "",listaIngre2, user1);
+        Receita receita2 = new Receita("Bolo222", "BLOOOOO11", 35.00, "https://vovopalmirinha.com.br/wp-content/uploads/2016/05/bolo-chocolate-simples-1.jpg",listaIngre2, user1);
         
         receitaRepository.save(receita1);
         receitaRepository.save(receita2);

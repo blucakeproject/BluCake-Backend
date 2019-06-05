@@ -1,7 +1,5 @@
 package br.com.blucake.api.dto;
 
-import java.util.Objects;
-
 /**
  *
  * @author Lucas Jansen

@@ -1,5 +1,6 @@
 package br.com.blucake.api.models;
 
+import br.com.blucake.api.dto.IngredienteDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,7 +31,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  *
  * @author Lucas Jansen
  */
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "ingrediente")
@@ -48,7 +48,7 @@ public class Ingrediente implements Serializable {
     @CreatedDate
     private Date dataCadatro;
 
-   @JsonIgnore
+    @JsonIgnore
     @ManyToMany(mappedBy = "ingrediente")
     private List<Receita> receitas;
 
@@ -62,7 +62,7 @@ public class Ingrediente implements Serializable {
     public Ingrediente(String nome, Usuario usuario) {
         this.nome = nome;
         this.usuario = usuario;
-    }   
+    }
 
     public Ingrediente(String nome) {
         this(null, nome, null);
@@ -72,6 +72,13 @@ public class Ingrediente implements Serializable {
         this.ingrediente_id = id;
         this.nome = nome;
         this.dataCadatro = dataCadatro;
+    }
+
+    public Ingrediente(IngredienteDTO obj) {
+        this.ingrediente_id = obj.getId();
+        this.nome = obj.getNome().toUpperCase();
+        this.dataCadatro = obj.getDataCadastro();
+        this.usuario = new Usuario(obj.getId());
     }
 
     public Long getId() {
@@ -104,7 +111,9 @@ public class Ingrediente implements Serializable {
 
     public void setReceitas(List<Receita> receitas) {
         this.receitas = receitas;
-    };
+    }
+
+    ;
 
     public Usuario getUsuario() {
         return usuario;
@@ -135,7 +144,5 @@ public class Ingrediente implements Serializable {
         final Ingrediente other = (Ingrediente) obj;
         return Objects.equals(this.ingrediente_id, other.ingrediente_id);
     }
-
-   
 
 }

@@ -1,5 +1,6 @@
 package br.com.blucake.api.models;
 
+import br.com.blucake.api.dto.ReceitaDTO;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -93,6 +94,20 @@ public class Receita implements Serializable {
         this.usuario = usuario;
     }
 
+    public Receita(ReceitaDTO obj) {
+        this.receita_id = receita_id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.imagem = imagem;
+        this.dataCadastro = dataCadastro;
+        this.ingrediente = ingrediente;
+        this.emailEnviados = emailEnviados;
+        this.usuario = usuario;
+    }
+
+    
+    
     public long getId() {
         return receita_id;
     }

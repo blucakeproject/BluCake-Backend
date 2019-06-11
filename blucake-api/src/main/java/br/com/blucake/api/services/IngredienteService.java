@@ -24,7 +24,7 @@ public class IngredienteService {
     IngrendienteRepository ingrendienteRepository;
 
     public List<Ingrediente> buscarTodosIngredientes() {
-        return this.ingrendienteRepository.findAll();
+        return this.ingrendienteRepository.findAllByOrderByNome();
     }
 
     public Boolean remover(Long id) {

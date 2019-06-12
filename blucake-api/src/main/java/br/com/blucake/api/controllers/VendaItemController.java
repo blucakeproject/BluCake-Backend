@@ -5,10 +5,10 @@
  */
 package br.com.blucake.api.controllers;
 
-import br.com.blucake.api.dto.VendaDTO;
-import br.com.blucake.api.models.Venda;
+import br.com.blucake.api.dto.VendaItemDTO;
+import br.com.blucake.api.models.VendaItem;
 import br.com.blucake.api.models.Response;
-import br.com.blucake.api.services.VendaService;
+import br.com.blucake.api.services.VendaItemService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,46 +26,45 @@ import java.util.stream.Collectors;
  *
  * @author Eder Jean Dias
  */
-
 @RestController
-@RequestMapping("/vendas")
-public class VendaController {
+@RequestMapping("/itensvenda")
+public class VendaItemController {
     
      @Autowired
-     VendaService vendaService;
+     VendaItemService vendaItemService;
     
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-    public ResponseEntity<Response> buscarTodasVendas() {
-        List<Venda> list = vendaService.buscarTodasVendas();
-        List<VendaDTO> listDto = list.stream().map(obj -> new VendaDTO(obj)).collect(Collectors.toList());
+    public ResponseEntity<Response> buscarTodosItensVenda() {
+        List<VendaItem> list = vendaItemService.buscarTodosItensVenda();
+        List<VendaItemDTO> listDto = list.stream().map(obj -> new VendaItemDTO(obj)).collect(Collectors.toList());
         Response response = new Response(listDto);
         return ResponseEntity.ok().body(response);
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-    public ResponseEntity<Response> addVenda(@RequestBody VendaDTO venda) {
-        Venda vendaModel = new Venda(venda);
-        VendaDTO vendaDTO = new VendaDTO(vendaService.addVenda(vendaModel));
+    public ResponseEntity<Response> addVenda(@RequestBody VendaItemDTO venda) {
+        VendaItem vendaModel = new VendaItem(venda);
+        VendaItemDTO vendaDTO = new VendaItemDTO(vendaItemService.addItemVenda(vendaModel));
         Response response = new Response(vendaDTO);
         return ResponseEntity.ok().body(response);
     }
 
     @PutMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-    public ResponseEntity<Response> atualizarVenda(@RequestBody VendaDTO venda) {
-        Venda vendaModel = new Venda(venda);
-        VendaDTO vendaDTO = new VendaDTO(vendaService.addVenda(vendaModel));
+    public ResponseEntity<Response> atualizarVenda(@RequestBody VendaItemDTO venda) {
+        VendaItem vendaModel = new VendaItem(venda);
+        VendaItemDTO vendaDTO = new VendaItemDTO(vendaItemService.addItemVenda(vendaModel));
         Response response = new Response(vendaDTO);
         return ResponseEntity.ok().body(response);
     }
     
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-    public ResponseEntity<Response> deletarVenda(@RequestBody VendaDTO venda) {
-        Venda vendaModel = new Venda(venda);
-        VendaDTO vendaDTO = new VendaDTO(vendaService.addVenda(vendaModel));
+    public ResponseEntity<Response> deletarVenda(@RequestBody VendaItemDTO venda) {
+        VendaItem vendaModel = new VendaItem(venda);
+        VendaItemDTO vendaDTO = new VendaItemDTO(vendaItemService.addItemVenda(vendaModel));
         Response response = new Response(vendaDTO);
         return ResponseEntity.ok().body(response);
     }

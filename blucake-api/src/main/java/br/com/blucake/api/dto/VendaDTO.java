@@ -2,7 +2,6 @@ package br.com.blucake.api.dto;
 
 import br.com.blucake.api.models.Usuario;
 import br.com.blucake.api.models.Venda;
-import br.com.blucake.api.models.VendaItem;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -24,34 +23,27 @@ public class VendaDTO {
     private Double valorTotal;
     
     private Usuario usuario;
-    
-    private List<VendaItem> itensVenda;
 
     public VendaDTO() {
     }
 
-    public VendaDTO(Long id, String descricao, Date dataVenda, String nomeVendedor, Double valorTotal, Usuario usuario, List<VendaItem> itensVenda) {
+    public VendaDTO(Long id, String descricao, Date dataVenda, String nomeVendedor, Double valorTotal, Usuario usuario) {
         this.id = id;
         this.descricao = descricao;
         this.dataVenda = dataVenda;
         this.nomeVendedor = nomeVendedor;
         this.valorTotal = valorTotal;
         this.usuario = usuario;
-        this.itensVenda = itensVenda;
     }
     
     public VendaDTO(Venda obj) {
-        this.id = id;
-        this.descricao = descricao;
-        this.dataVenda = dataVenda;
-        this.nomeVendedor = nomeVendedor;
-        this.valorTotal = valorTotal;
-        this.usuario = usuario;
-        this.itensVenda = itensVenda;
+        this.id = obj.getId();
+        this.descricao = obj.getDescricao();
+        this.dataVenda = obj.getDataVenda();
+        this.nomeVendedor = obj.getNomeVendedor();
+        this.valorTotal = obj.getValorTotal();
+        this.usuario = obj.getUsuario();
     }
-    
-    
-    
 
     public Long getId() {
         return id;
@@ -100,19 +92,11 @@ public class VendaDTO {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+    
+   
 
-    public List<VendaItem> getItensVenda() {
-        return itensVenda;
+    @Override
+    public String toString() {
+        return "VendaDTO{" + "id=" + id + ", descricao=" + descricao + ", dataVenda=" + dataVenda + ", nomeVendedor=" + nomeVendedor + ", valorTotal=" + valorTotal + ", usuario=" + usuario + '}';
     }
-
-    public void setItensVenda(List<VendaItem> itensVenda) {
-        this.itensVenda = itensVenda;
-    }
-    
-    
-    
-    
-
-
-
 }

@@ -4,12 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.blucake.api.models.Venda;
-import br.com.blucake.api.models.Usuario;
-import java.util.List;
+import br.com.blucake.api.models.VendaItem;
 
 @Repository
 @Transactional(readOnly = true )
-public interface VendaRepository extends JpaRepository <Venda, Long >{
+public interface VendaItemRepository extends JpaRepository <VendaItem, Long >{
  
 }

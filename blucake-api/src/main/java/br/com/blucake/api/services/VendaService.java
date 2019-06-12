@@ -16,8 +16,8 @@ public class VendaService{
 	@Autowired
 	private VendaRepository vendaRepository;
         
-        public List<Venda> buscarTodasVendas(Usuario u){
-            return this.vendaRepository.findAllByUsuario(u);
+        public List<Venda> buscarTodasVendas(){
+            return this.vendaRepository.findAll();
         }
         
         public Venda addVenda(Venda venda){            

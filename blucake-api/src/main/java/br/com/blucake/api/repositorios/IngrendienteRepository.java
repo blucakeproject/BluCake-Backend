@@ -21,4 +21,6 @@ public interface IngrendienteRepository extends JpaRepository <Ingrediente, Long
     
     public List<Ingrediente> findAllByOrderByNome(); 
     
+    public Ingrediente findByNome(String nome); 
+    
 }

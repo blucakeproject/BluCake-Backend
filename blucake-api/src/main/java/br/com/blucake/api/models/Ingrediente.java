@@ -1,11 +1,7 @@
 package br.com.blucake.api.models;
 
 import br.com.blucake.api.dto.IngredienteDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -17,10 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,7 +34,7 @@ public class Ingrediente implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ingrediente_id;
 
-    @Column
+    @Column(unique = true)
     private String nome;
 
     @Column
@@ -60,7 +54,7 @@ public class Ingrediente implements Serializable {
     }
 
     public Ingrediente(String nome, Usuario usuario) {
-        this.nome = nome;
+        this.nome = nome.toUpperCase();
         this.usuario = usuario;
     }
 
@@ -70,7 +64,7 @@ public class Ingrediente implements Serializable {
 
     public Ingrediente(Long id, String nome, Date dataCadatro) {
         this.ingrediente_id = id;
-        this.nome = nome;
+        this.nome = nome.toUpperCase();
         this.dataCadatro = dataCadatro;
     }
 
@@ -78,7 +72,7 @@ public class Ingrediente implements Serializable {
         this.ingrediente_id = obj.getId();
         this.nome = obj.getNome().toUpperCase();
         this.dataCadatro = obj.getDataCadastro();
-        this.usuario = new Usuario(obj.getId());
+        this.usuario = new Usuario(obj.getUsuarioId());
     }
 
     public Long getId() {

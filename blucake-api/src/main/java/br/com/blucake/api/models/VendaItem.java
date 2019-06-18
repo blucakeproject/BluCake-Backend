@@ -1,5 +1,6 @@
 package br.com.blucake.api.models;
 
+import br.com.blucake.api.dto.VendaItemDTO;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +39,17 @@ public class VendaItem implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_receita")
     private Receita receita;
+
+    public VendaItem() {
+    }
+
+    public VendaItem(VendaItemDTO venda) {
+        this.id = venda.getId();
+        this.quantidade = venda.getQuantidade();
+        this.valor = venda.getValor();
+        this.venda = venda.getVenda();
+        this.receita = venda.getReceita();
+    }
 
     public long getId() {
         return id;

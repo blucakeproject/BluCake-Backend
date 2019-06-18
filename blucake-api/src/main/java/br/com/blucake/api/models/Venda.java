@@ -49,6 +49,11 @@ public class Venda implements Serializable {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    public Venda() {
+    }
+
+    
+    
     public Venda(VendaDTO obj) {
         this.id = obj.getId();
         this.dataVenda = obj.getDataVenda();

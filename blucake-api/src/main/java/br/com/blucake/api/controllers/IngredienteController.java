@@ -10,6 +10,7 @@ import br.com.blucake.api.models.Ingrediente;
 import br.com.blucake.api.models.Response;
 import br.com.blucake.api.services.IngredienteService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,45 +44,49 @@ public class IngredienteController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Response> addIngrediente(@RequestBody IngredienteDTO ingrDto) {
-        Ingrediente ingrediente = new Ingrediente(ingrDto);
-        Boolean adicionou = ingredienteService.addIngrediente(ingrediente);
+        Ingrediente ingrediente;
+        Boolean adicionou = false;
 
-        ingrediente = null;
-        if (adicionou) {
-            ingrediente = ingredienteService.buscarPorNome(ingrDto.getNome());
-            if (ingrediente == null) {
-                adicionou = false;
+        if (ingrDto != null) {
+            ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
+
+            if (ingrediente != null) {
+                adicionou = true;
             }
         }
+
         return ResponseEntity.ok().body(new Response(adicionou));
     }
 
-//    @PutMapping
-//    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-//    public ResponseEntity<Response> alterarIngrediente(@RequestBody IngredienteDTO ingrDto) {
-////        
-////        Boolean alterou = false;
-////        if (ingrDto != null) {
-////            Ingrediente oriIngrediente = ingredienteService.buscarPorId(ingrDto.getId());
-////            
-////            Ingrediente ingrediente = new Ingrediente(ingrDto);
-////            ingredienteService.alterarIngrediente(ingrediente);
-////            
-////            ingrediente = ingredienteService.buscarPorNome(ingrDto.getNome());
-////            if (!ingrediente.getNome().equalsIgnoreCase(oriIngrediente.getNome())) {
-////                alterou = true;
-////            }
-////        }
-////        return ResponseEntity.ok().body(new Response(alterou));
-//    }
+    @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    public ResponseEntity<Response> alterarIngrediente(@RequestBody IngredienteDTO ingrDto) {
+        Ingrediente ingrediente;
+        Boolean alterou = false;
+
+        if (ingrDto != null) {
+            Optional<Ingrediente> oriIngrediente = ingredienteService.buscarPorId(ingrDto.getId());
+
+            ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
+            if (ingrediente == null) {
+                return ResponseEntity.ok().body(new Response(alterou));
+            } else {
+                if (!oriIngrediente.get().getNome().equalsIgnoreCase(ingrediente.getNome())) {
+                    alterou = true;
+                }
+            }
+        }
+        return ResponseEntity.ok().body(new Response(alterou));
+    }
 
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Response> deletarIngrediente(@RequestBody IngredienteDTO ingrDto) {
         Boolean deletou = false;
+        
         if (ingrDto.getId() != null) {
             ingredienteService.remover(ingrDto.getId());
-
+            
             deletou = !ingredienteService.buscarPorId(ingrDto.getId()).isPresent();
         }
         return ResponseEntity.ok().body(new Response(deletou));

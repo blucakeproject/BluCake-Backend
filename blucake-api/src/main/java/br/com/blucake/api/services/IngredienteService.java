@@ -10,7 +10,6 @@ import br.com.blucake.api.repositorios.IngrendienteRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.SQLWarningException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,12 +30,8 @@ public class IngredienteService {
         this.ingrendienteRepository.deleteById(id);
     }
 
-    public Boolean addIngrediente(Ingrediente ingrediente) {
-        return this.ingrendienteRepository.save(ingrediente) != null;
-    }
-
-    public void alterarIngrediente(Ingrediente ingrediente) {
-        this.ingrendienteRepository.save(ingrediente);
+    public Ingrediente addIngrediente(Ingrediente ingrediente) {
+        return this.ingrendienteRepository.save(ingrediente);
     }
 
     public Optional<Ingrediente> buscarPorId(Long id) {

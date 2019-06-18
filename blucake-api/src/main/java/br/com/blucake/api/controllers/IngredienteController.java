@@ -6,18 +6,18 @@
 package br.com.blucake.api.controllers;
 
 import br.com.blucake.api.dto.IngredienteDTO;
-import br.com.blucake.api.dto.UsuarioDTO;
 import br.com.blucake.api.models.Ingrediente;
 import br.com.blucake.api.models.Response;
-import br.com.blucake.api.models.Usuario;
 import br.com.blucake.api.services.IngredienteService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,21 +43,53 @@ public class IngredienteController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-    public ResponseEntity<Response> addUsuario(@RequestBody IngredienteDTO ingrDto) {
-        Ingrediente ingrediente = new Ingrediente(ingrDto);
-        Response response = new Response(ingredienteService.addIngrediente(ingrediente));
-        return ResponseEntity.ok().body(response);
+    public ResponseEntity<Response> addIngrediente(@RequestBody IngredienteDTO ingrDto) {
+        Ingrediente ingrediente;
+        Boolean adicionou = false;
+
+        if (ingrDto != null) {
+            ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
+
+            if (ingrediente != null) {
+                adicionou = true;
+            }
+        }
+
+        return ResponseEntity.ok().body(new Response(adicionou));
+    }
+
+    @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    public ResponseEntity<Response> alterarIngrediente(@RequestBody IngredienteDTO ingrDto) {
+        Ingrediente ingrediente;
+        Boolean alterou = false;
+
+        if (ingrDto != null) {
+            Optional<Ingrediente> oriIngrediente = ingredienteService.buscarPorId(ingrDto.getId());
+
+            ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
+            if (ingrediente == null) {
+                return ResponseEntity.ok().body(new Response(alterou));
+            } else {
+                if (!oriIngrediente.get().getNome().equalsIgnoreCase(ingrediente.getNome())) {
+                    alterou = true;
+                }
+            }
+        }
+        return ResponseEntity.ok().body(new Response(alterou));
     }
 
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-    public ResponseEntity<Response> deletarIngrediente(@RequestBody Long idIngrediente) {
-        Boolean deletou = ingredienteService.remover(idIngrediente);
-        if (deletou) {
-            deletou = ingredienteService.buscarPorId(idIngrediente).isPresent();
+    public ResponseEntity<Response> deletarIngrediente(@RequestBody IngredienteDTO ingrDto) {
+        Boolean deletou = false;
+        
+        if (ingrDto.getId() != null) {
+            ingredienteService.remover(ingrDto.getId());
+            
+            deletou = !ingredienteService.buscarPorId(ingrDto.getId()).isPresent();
         }
-        Response response = new Response(deletou);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(new Response(deletou));
     }
 
 }

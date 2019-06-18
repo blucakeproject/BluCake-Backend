@@ -1,10 +1,7 @@
 package br.com.blucake.api.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import br.com.blucake.api.dto.IngredienteDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -16,10 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,7 +25,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  *
  * @author Lucas Jansen
  */
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "ingrediente")
@@ -40,7 +34,7 @@ public class Ingrediente implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ingrediente_id;
 
-    @Column
+    @Column(unique = true)
     private String nome;
 
     @Column
@@ -48,7 +42,7 @@ public class Ingrediente implements Serializable {
     @CreatedDate
     private Date dataCadatro;
 
-   @JsonIgnore
+    @JsonIgnore
     @ManyToMany(mappedBy = "ingrediente")
     private List<Receita> receitas;
 
@@ -60,9 +54,9 @@ public class Ingrediente implements Serializable {
     }
 
     public Ingrediente(String nome, Usuario usuario) {
-        this.nome = nome;
+        this.nome = nome.toUpperCase();
         this.usuario = usuario;
-    }   
+    }
 
     public Ingrediente(String nome) {
         this(null, nome, null);
@@ -70,8 +64,15 @@ public class Ingrediente implements Serializable {
 
     public Ingrediente(Long id, String nome, Date dataCadatro) {
         this.ingrediente_id = id;
-        this.nome = nome;
+        this.nome = nome.toUpperCase();
         this.dataCadatro = dataCadatro;
+    }
+
+    public Ingrediente(IngredienteDTO obj) {
+        this.ingrediente_id = obj.getId();
+        this.nome = obj.getNome().toUpperCase();
+        this.dataCadatro = obj.getDataCadastro();
+        this.usuario = new Usuario(obj.getUsuarioId());
     }
 
     public Long getId() {
@@ -104,7 +105,9 @@ public class Ingrediente implements Serializable {
 
     public void setReceitas(List<Receita> receitas) {
         this.receitas = receitas;
-    };
+    }
+
+    ;
 
     public Usuario getUsuario() {
         return usuario;
@@ -135,7 +138,5 @@ public class Ingrediente implements Serializable {
         final Ingrediente other = (Ingrediente) obj;
         return Objects.equals(this.ingrediente_id, other.ingrediente_id);
     }
-
-   
 
 }

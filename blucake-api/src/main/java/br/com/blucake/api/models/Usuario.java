@@ -93,7 +93,8 @@ public class Usuario implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Ingrediente> ingredientes;
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<EmailEnviado> emailEnviados;
 

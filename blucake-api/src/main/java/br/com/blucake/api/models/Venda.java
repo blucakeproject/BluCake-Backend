@@ -38,7 +38,6 @@ public class Venda implements Serializable {
     @Column
     private Double valorTotal;
     
-    
     @Column
     private String descricao;
     
@@ -51,8 +50,6 @@ public class Venda implements Serializable {
 
     public Venda() {
     }
-
-    
     
     public Venda(VendaDTO obj) {
         this.id = obj.getId();

@@ -36,6 +36,8 @@ public class VendaItem implements Serializable {
     @JoinColumn(name = "id_venda")
     private Venda venda;
     
+    private Usuario usuario;
+    
     @ManyToOne
     @JoinColumn(name = "id_receita")
     private Receita receita;
@@ -83,6 +85,14 @@ public class VendaItem implements Serializable {
         this.venda = venda;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     public Receita getReceita() {
         return receita;
     }
@@ -94,7 +104,7 @@ public class VendaItem implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 23 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 41 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
 
@@ -118,11 +128,6 @@ public class VendaItem implements Serializable {
 
     @Override
     public String toString() {
-        return "VendaItem{" + "id=" + id + ", quantidade=" + quantidade + ", valor=" + valor + ", venda=" + venda + ", receita=" + receita + '}';
-    }
-
-    
-    
-    
-
+        return "VendaItem{" + "id=" + id + ", quantidade=" + quantidade + ", valor=" + valor + ", venda=" + venda + ", usuario=" + usuario + ", receita=" + receita + '}';
+    } 
 }

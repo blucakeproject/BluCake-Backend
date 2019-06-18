@@ -8,6 +8,7 @@ package br.com.blucake.api.services;
 import br.com.blucake.api.models.Ingrediente;
 import br.com.blucake.api.repositorios.IngrendienteRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,28 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class IngredienteService {
-    
+
     @Autowired
     IngrendienteRepository ingrendienteRepository;
-    
-     public List<Ingrediente> buscarTodosIngredientes(){
-            return this.ingrendienteRepository.findAll();
-        }
-    
+
+    public List<Ingrediente> buscarTodosIngredientes() {
+        return this.ingrendienteRepository.findAllByOrderByNome();
+    }
+
+    public void remover(Long id) {
+        this.ingrendienteRepository.deleteById(id);
+    }
+
+    public Ingrediente addIngrediente(Ingrediente ingrediente) {
+        return this.ingrendienteRepository.save(ingrediente);
+    }
+
+    public Optional<Ingrediente> buscarPorId(Long id) {
+        return this.ingrendienteRepository.findById(id);
+    }
+
+    public Ingrediente buscarPorNome(String nome) {
+        return this.ingrendienteRepository.findByNome(nome);
+    }
+
 }

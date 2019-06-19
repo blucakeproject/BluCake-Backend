@@ -6,9 +6,12 @@
 package br.com.blucake.api.controllers;
 
 import br.com.blucake.api.dto.ReceitaDTO;
+import br.com.blucake.api.models.Ingrediente;
 import br.com.blucake.api.models.Receita;
 import br.com.blucake.api.models.Response;
+import br.com.blucake.api.services.IngredienteService;
 import br.com.blucake.api.services.ReceitaService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,9 @@ public class ReceitaController {
     
      @Autowired
      ReceitaService receitaService;
+     
+     @Autowired
+     IngredienteService ingredienteService;
     
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
@@ -44,6 +50,7 @@ public class ReceitaController {
     
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @RequestMapping("/receitaporid")
     public ResponseEntity<Response> buscarReceitaPorId(@RequestBody Long id) {
         Optional<Receita> receita = receitaService.buscarReceitaPorId(id);
         Response response = new Response(receita);
@@ -53,7 +60,7 @@ public class ReceitaController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Response> adicionaReceita(@RequestBody ReceitaDTO receitaDTO) {
-        Receita receita = new Receita(receitaDTO);
+        Receita receita = new Receita(receitaDTO);        
         Response response = new Response(receitaService.addReceita(receita));
         return ResponseEntity.ok().body(response);
     }

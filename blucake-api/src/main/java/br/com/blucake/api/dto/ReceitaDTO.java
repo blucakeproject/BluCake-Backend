@@ -29,12 +29,6 @@ public class ReceitaDTO {
 
     private Date dataCadastro;
 
-    private List<Ingrediente> ingrediente;
-    
-    private List<EmailEnviado> emailEnviados;
-
-    private Usuario usuario;
-
     public ReceitaDTO(long receita_id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingrediente, List<EmailEnviado> emailEnviados, Usuario usuario) {
         this.receita_id = receita_id;
         this.nome = nome;
@@ -42,21 +36,15 @@ public class ReceitaDTO {
         this.preco = preco;
         this.imagem = imagem;
         this.dataCadastro = dataCadastro;
-        this.ingrediente = ingrediente;
-        this.emailEnviados = emailEnviados;
-        this.usuario = usuario;
     }
 
      public ReceitaDTO(Receita obj) {
-        this.receita_id = receita_id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.imagem = imagem;
-        this.dataCadastro = dataCadastro;
-        this.ingrediente = ingrediente;
-        this.emailEnviados = emailEnviados;
-        this.usuario = usuario;
+        this.receita_id = obj.getId();
+        this.nome = obj.getNome();
+        this.descricao = obj.getDescricao();
+        this.preco = obj.getPreco();
+        this.imagem = obj.getImagem();
+        this.dataCadastro = obj.getDataCadastro();
     }
     
     public long getReceita_id() {
@@ -105,31 +93,5 @@ public class ReceitaDTO {
 
     public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
-    }
-
-    public List<Ingrediente> getIngrediente() {
-        return ingrediente;
-    }
-
-    public void setIngrediente(List<Ingrediente> ingrediente) {
-        this.ingrediente = ingrediente;
-    }
-
-    public List<EmailEnviado> getEmailEnviados() {
-        return emailEnviados;
-    }
-
-    public void setEmailEnviados(List<EmailEnviado> emailEnviados) {
-        this.emailEnviados = emailEnviados;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-    
-    
+    }    
 }

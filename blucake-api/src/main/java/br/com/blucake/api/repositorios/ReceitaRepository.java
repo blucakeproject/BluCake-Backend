@@ -13,4 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true )
 public interface ReceitaRepository extends JpaRepository <Receita, Long >{
     
+    
 }

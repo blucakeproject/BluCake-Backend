@@ -4,6 +4,7 @@ import br.com.blucake.api.dto.ReceitaDTO;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -82,7 +83,7 @@ public class Receita implements Serializable {
         this.usuario = usuario;
     }
 
-    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Long idUsuario) {
+    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Optional<Ingrediente>> ingredienteReceitas, Long idUsuario) {
         this.receita_id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -95,15 +96,12 @@ public class Receita implements Serializable {
     }
 
     public Receita(ReceitaDTO obj) {
-        this.receita_id = receita_id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.imagem = imagem;
-        this.dataCadastro = dataCadastro;
-        this.ingrediente = ingrediente;
-        this.emailEnviados = emailEnviados;
-        this.usuario = usuario;
+        this.receita_id = obj.getReceita_id();
+        this.nome = obj.getNome();
+        this.descricao = obj.getDescricao();
+        this.preco = obj.getPreco();
+        this.imagem = obj.getImagem();
+        this.dataCadastro = obj.getDataCadastro();
     }
 
     

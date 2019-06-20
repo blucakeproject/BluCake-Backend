@@ -5,8 +5,10 @@
  */
 package br.com.blucake.api.controllers;
 
+import br.com.blucake.api.dto.IngredienteDTO;
 import br.com.blucake.api.dto.ReceitaDTO;
 import br.com.blucake.api.models.Ingrediente;
+import br.com.blucake.api.models.IngredienteReceita;
 import br.com.blucake.api.models.Receita;
 import br.com.blucake.api.models.Response;
 import br.com.blucake.api.services.IngredienteService;
@@ -42,6 +44,7 @@ public class ReceitaController {
     
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @RequestMapping("/todasreceita")
     public ResponseEntity<Response> buscarTodasReceitas() {
         List<Receita> list = receitaService.buscarTodosReceitas();
         Response response = new Response(list);
@@ -59,9 +62,14 @@ public class ReceitaController {
     
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-    public ResponseEntity<Response> adicionaReceita(@RequestBody ReceitaDTO receitaDTO) {
+    public ResponseEntity<Response> adicionaReceita(@RequestBody ReceitaDTO receitaDTO, @RequestBody List<IngredienteDTO> ingredienteDTO) {
         Receita receita = new Receita(receitaDTO);        
         Response response = new Response(receitaService.addReceita(receita));
+        for (IngredienteDTO ingredienteDTO1 : ingredienteDTO) {
+            Ingrediente ingrediente = new Ingrediente(ingredienteDTO1);
+            IngredienteReceita ingReceita = new IngredienteReceita(ingrediente, (Receita) response.getData());
+            
+        }
         return ResponseEntity.ok().body(response);
     }
     

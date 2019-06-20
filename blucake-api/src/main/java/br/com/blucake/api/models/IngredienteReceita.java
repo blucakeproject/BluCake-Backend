@@ -1,6 +1,8 @@
 package br.com.blucake.api.models;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -28,12 +30,9 @@ public class IngredienteReceita implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    
+    private Long id;    
     
     private Ingrediente ingrediente_id;
-
     
     private Receita receita_id;
 
@@ -41,6 +40,17 @@ public class IngredienteReceita implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date dataCadastro;
+
+    public IngredienteReceita(Ingrediente ingrediente_id, Receita receita_id) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        Calendar calendar = Calendar.getInstance();
+        
+        this.ingrediente_id = ingrediente_id;
+        this.receita_id = receita_id;
+        this.dataCadastro = calendar.getTime();
+    }
+    
+    
 
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package br.com.blucake.api.models;
 
+import br.com.blucake.api.dto.VendaItemDTO;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,11 +34,24 @@ public class VendaItem implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "id_venda")
+    private Venda venda;
+    
     private Usuario usuario;
     
     @ManyToOne
     @JoinColumn(name = "id_receita")
     private Receita receita;
+
+    public VendaItem() {
+    }
+
+    public VendaItem(VendaItemDTO venda) {
+        this.id = venda.getId();
+        this.quantidade = venda.getQuantidade();
+        this.valor = venda.getValor();
+        this.venda = venda.getVenda();
+        this.receita = venda.getReceita();
+    }
 
     public long getId() {
         return id;
@@ -63,6 +77,14 @@ public class VendaItem implements Serializable {
         this.valor = valor;
     }
 
+    public Venda getVenda() {
+        return venda;
+    }
+
+    public void setVenda(Venda venda) {
+        this.venda = venda;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -81,8 +103,8 @@ public class VendaItem implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + (int) (this.id ^ (this.id >>> 32));
+        int hash = 7;
+        hash = 41 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
 
@@ -106,9 +128,6 @@ public class VendaItem implements Serializable {
 
     @Override
     public String toString() {
-        return "VendaItem{" + "id=" + id + ", quantidade=" + quantidade + ", valor=" + valor + ", usuario=" + usuario + ", receita=" + receita + '}';
-    }
-    
-    
-
+        return "VendaItem{" + "id=" + id + ", quantidade=" + quantidade + ", valor=" + valor + ", venda=" + venda + ", usuario=" + usuario + ", receita=" + receita + '}';
+    } 
 }

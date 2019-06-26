@@ -36,5 +36,12 @@ public class HomeController {
         Response response = new Response(list);
         return ResponseEntity.ok().body(response);
     }
+    
+    @GetMapping
+    public ResponseEntity<Response> buscarTodasReceitasOrderByPreco() {
+        List<Receita> list = receitaService.buscarTodosReceitasOrderByPreco();
+        Response response = new Response(list);
+        return ResponseEntity.ok().body(response);
+    }
 
 }

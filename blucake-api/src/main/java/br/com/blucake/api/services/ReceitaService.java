@@ -28,4 +28,8 @@ public class ReceitaService {
      public List<Receita> buscarTodosReceitasOrderByPreco(){
             return this.receitaRepository.findAllByOrderByPreco();
      }
+     
+     public List<Receita> buscarTodosReceitasOrderByPrecoDesc(){
+            return this.receitaRepository.findAllByOrderByPrecoDesc();
+     }
 }

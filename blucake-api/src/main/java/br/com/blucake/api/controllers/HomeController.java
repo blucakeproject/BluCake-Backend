@@ -37,9 +37,16 @@ public class HomeController {
         return ResponseEntity.ok().body(response);
     }
     
-    @GetMapping
+    @GetMapping(path = "/menorPreco")
     public ResponseEntity<Response> buscarTodasReceitasOrderByPreco() {
         List<Receita> list = receitaService.buscarTodosReceitasOrderByPreco();
+        Response response = new Response(list);
+        return ResponseEntity.ok().body(response);
+    }
+    
+    @GetMapping(path = "/maiorPreco")
+    public ResponseEntity<Response> buscarTodasReceitasOrderByPrecoDesc() {
+        List<Receita> list = receitaService.buscarTodosReceitasOrderByPrecoDesc();
         Response response = new Response(list);
         return ResponseEntity.ok().body(response);
     }

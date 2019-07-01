@@ -49,25 +49,15 @@ public class IngredienteController {
         Boolean adicionou = false;
 
         if (ingrDto != null) {
-<<<<<<< HEAD
             if (!existeIngrediente(ingrDto)) {
                 ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
 
                 if (ingrediente != null) {
                     adicionou = true;
                 }
-=======
-            ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
-
-            if (ingrediente != null) {
-                adicionou = true;
->>>>>>> 96f5c8611efc0293426c57ea1677c60abd2cdf6d
             }
         }
-
         return ResponseEntity.ok().body(new Response(adicionou));
-<<<<<<< HEAD
-=======
     }
 
     @PutMapping
@@ -89,40 +79,6 @@ public class IngredienteController {
             }
         }
         return ResponseEntity.ok().body(new Response(alterou));
->>>>>>> 96f5c8611efc0293426c57ea1677c60abd2cdf6d
-    }
-
-    @PutMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-<<<<<<< HEAD
-    public ResponseEntity<Response> alterarIngrediente(@RequestBody IngredienteDTO ingrDto) {
-        Ingrediente ingrediente;
-        Boolean alterou = false;
-
-        if (ingrDto != null) {
-            Optional<Ingrediente> oriIngrediente = ingredienteService.buscarPorId(ingrDto.getId());
-
-            ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
-            if (ingrediente == null) {
-                return ResponseEntity.ok().body(new Response(alterou));
-            } else {
-                if (!oriIngrediente.get().getNome().equalsIgnoreCase(ingrediente.getNome())) {
-                    alterou = true;
-                }
-            }
-        }
-        return ResponseEntity.ok().body(new Response(alterou));
-=======
-    public ResponseEntity<Response> deletarIngrediente(@RequestBody IngredienteDTO ingrDto) {
-        Boolean deletou = false;
-        
-        if (ingrDto.getId() != null) {
-            ingredienteService.remover(ingrDto.getId());
-            
-            deletou = !ingredienteService.buscarPorId(ingrDto.getId()).isPresent();
-        }
-        return ResponseEntity.ok().body(new Response(deletou));
->>>>>>> 96f5c8611efc0293426c57ea1677c60abd2cdf6d
     }
 
     @DeleteMapping("/{id}")

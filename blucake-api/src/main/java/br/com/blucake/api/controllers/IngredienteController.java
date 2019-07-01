@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,13 +49,14 @@ public class IngredienteController {
         Boolean adicionou = false;
 
         if (ingrDto != null) {
-            ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
+            if (!existeIngrediente(ingrDto)) {
+                ingrediente = ingredienteService.addIngrediente(new Ingrediente(ingrDto));
 
-            if (ingrediente != null) {
-                adicionou = true;
+                if (ingrediente != null) {
+                    adicionou = true;
+                }
             }
         }
-
         return ResponseEntity.ok().body(new Response(adicionou));
     }
 
@@ -79,17 +81,31 @@ public class IngredienteController {
         return ResponseEntity.ok().body(new Response(alterou));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
-    public ResponseEntity<Response> deletarIngrediente(@RequestBody IngredienteDTO ingrDto) {
+    public ResponseEntity<Response> deletarIngrediente(@PathVariable String id) {
         Boolean deletou = false;
-        
-        if (ingrDto.getId() != null) {
-            ingredienteService.remover(ingrDto.getId());
-            
-            deletou = !ingredienteService.buscarPorId(ingrDto.getId()).isPresent();
+
+        if (id != null) {
+            if (!existeIngredienteReceita(Long.parseLong(id))) {
+                ingredienteService.remover(Long.parseLong(id));
+
+                deletou = !ingredienteService.buscarPorId(Long.parseLong(id)).isPresent();
+            }
         }
         return ResponseEntity.ok().body(new Response(deletou));
     }
 
+    private Boolean existeIngrediente(IngredienteDTO ingrDto) {
+        Ingrediente ingre = this.ingredienteService.buscarPorNome(ingrDto.getNome().toUpperCase());
+        return ingre != null;
+    }
+
+    private Boolean existeIngredienteReceita(Long idIngr) {
+
+        Optional<Ingrediente> opIngre = this.ingredienteService.buscarPorId(idIngr);
+        Ingrediente ingr = opIngre.get();
+
+        return !ingr.getReceitas().isEmpty();
+    }
 }

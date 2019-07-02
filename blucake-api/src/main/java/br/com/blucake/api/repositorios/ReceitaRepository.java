@@ -15,4 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true )
 public interface ReceitaRepository extends JpaRepository <Receita, Long >{
     public List<Receita> findByUsuario(Usuario usuario);
+    public List<Receita> findAllByOrderByPreco();
+    public List<Receita> findAllByOrderByPrecoDesc(); 
 }

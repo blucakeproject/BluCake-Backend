@@ -37,4 +37,12 @@ public class ReceitaService {
      public Receita cadastroDeReceita(Receita receita){
          return this.receitaRepository.save(receita);
      }
+
+     public List<Receita> buscarTodosReceitasOrderByPreco(){
+            return this.receitaRepository.findAllByOrderByPreco();
+     }
+     
+     public List<Receita> buscarTodosReceitasOrderByPrecoDesc(){
+            return this.receitaRepository.findAllByOrderByPrecoDesc();
+     }
 }

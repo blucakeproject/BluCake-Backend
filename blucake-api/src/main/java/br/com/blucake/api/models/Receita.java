@@ -66,6 +66,17 @@ public class Receita implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+    
+    @Column
+    private boolean ativo;
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
 
     public Receita() {
     }
@@ -74,16 +85,17 @@ public class Receita implements Serializable {
         this.receita_id = receita_id;
     }
 
-    public Receita(String nome, String descricao, Double preco, String imagem, List<Ingrediente> ingrediente, Usuario usuario) {
+    public Receita(String nome, String descricao, Double preco, String imagem, List<Ingrediente> ingrediente, Usuario usuario, boolean ativo) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.imagem = imagem;
         this.ingrediente = ingrediente;
         this.usuario = usuario;
+        this.ativo = ativo;
     }
 
-    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Long idUsuario) {
+    public Receita(long id, String nome, String descricao, Double preco, String imagem, Date dataCadastro, List<Ingrediente> ingredienteReceitas, Long idUsuario, boolean ativo) {
         this.receita_id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -93,6 +105,7 @@ public class Receita implements Serializable {
         this.usuario = new Usuario(idUsuario);
         this.ingrediente = ingrediente;
         this.usuario = usuario;
+        this.ativo = ativo;
     }
 
     public long getId() {

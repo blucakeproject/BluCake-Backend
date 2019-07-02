@@ -6,6 +6,7 @@
 package br.com.blucake.api.services;
 
 import br.com.blucake.api.models.Receita;
+import br.com.blucake.api.models.Usuario;
 import br.com.blucake.api.repositorios.ReceitaRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +25,16 @@ public class ReceitaService {
      public List<Receita> buscarTodosReceitas(){
             return this.receitaRepository.findAll();
         }
+     
+     public Receita buscaReceitaPorId(Long id){
+         return this.receitaRepository.findById(id).get();
+     }
+     
+     public List<Receita> buscaReceitaPorUsuario(Usuario usuario){
+         return this.receitaRepository.findByUsuario(usuario);
+     }
+     
+     public Receita cadastroDeReceita(Receita receita){
+         return this.receitaRepository.save(receita);
+     }
 }

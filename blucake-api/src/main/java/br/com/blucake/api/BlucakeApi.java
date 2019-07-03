@@ -23,10 +23,10 @@ public class BlucakeApi implements CommandLineRunner {
 
     @Autowired
     UsuarioRepository usuarioRepository;
-    
+
     @Autowired
     IngrendienteRepository ingrendienteRepository;
-    
+
     @Autowired
     ReceitaRepository receitaRepository;
 
@@ -39,7 +39,6 @@ public class BlucakeApi implements CommandLineRunner {
 
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 //        Calendar calendar = Calendar.getInstance();
-
         Usuario user1;
         user1 = new Usuario(null,
                 "admin",
@@ -58,7 +57,25 @@ public class BlucakeApi implements CommandLineRunner {
                 "SC",
                 "8915000");
         usuarioRepository.save(user1);
-        
+        Usuario user2;
+        user2 = new Usuario(null,
+                "usuario",
+                "user@user.com",
+                "123",
+                PerfilEnum.ROLE_ADMIN,
+                "89080989089",
+                "33531354",
+                "8098098908908",
+                "09313231222",
+                "Silvar trac",
+                12,
+                "n tem",
+                "centro",
+                "Blumenau",
+                "SC",
+                "8915000");
+        usuarioRepository.save(user2);
+
         Ingrediente in1 = new Ingrediente("Morango", user1);
         Ingrediente in2 = new Ingrediente("Trigo", user1);
         Ingrediente in3 = new Ingrediente("ração", user1);
@@ -85,8 +102,8 @@ public class BlucakeApi implements CommandLineRunner {
 //        Ingrediente in24 = new Ingrediente("Mofefeango", user1);
 //        Ingrediente in25 = new Ingrediente("Morefefango", user1);
 //        Ingrediente in26 = new Ingrediente("Morfeefango", user1);
-        
-        ingrendienteRepository.save(in1);        
+
+        ingrendienteRepository.save(in1);
         ingrendienteRepository.save(in2);
         ingrendienteRepository.save(in3);
 //        ingrendienteRepository.save(in4);
@@ -112,11 +129,11 @@ public class BlucakeApi implements CommandLineRunner {
 //        ingrendienteRepository.save(in24);
 //        ingrendienteRepository.save(in25);
 //        ingrendienteRepository.save(in25);
-        
+
         List<Ingrediente> listaIngre = new ArrayList<>();
         listaIngre.add(in1);
         listaIngre.add(in2);
-       
+
         List<Ingrediente> listaIngre2 = new ArrayList<>();
         listaIngre2.add(in3);
         listaIngre2.add(in2);
@@ -128,13 +145,17 @@ public class BlucakeApi implements CommandLineRunner {
 //        listaIngre.add(in19);
 //        listaIngre.add(in4);
 //        listaIngre.add(in20);
-        
-        
-        Receita receita1 = new Receita("Bolo1", "BLOOOOO11", 35.00, "https://www.nestleprofessional.com.br/sites/g/files/gfb331/f/styles/recipe/public/media/bolo-trufado-charge.jpg?itok=rgzHVFs1",listaIngre, user1);
-        
-        Receita receita2 = new Receita("Bolo222", "BLOOOOO11", 35.00, "https://vovopalmirinha.com.br/wp-content/uploads/2016/05/bolo-chocolate-simples-1.jpg",listaIngre2, user1);
-        
+
+        Receita receita1 = new Receita("Bolo Trufado", "BLOOOOO11", 35.00, "https://www.nestleprofessional.com.br/sites/g/files/gfb331/f/styles/recipe/public/media/bolo-trufado-charge.jpg?itok=rgzHVFs1", listaIngre, user1, true);
+
+        Receita receita2 = new Receita("Bolo Chocolate", "BLOOOOO11", 35.00, "https://vovopalmirinha.com.br/wp-content/uploads/2016/05/bolo-chocolate-simples-1.jpg", listaIngre2, user1, true);
+        Receita receita3 = new Receita("Bolo Trufado 2", "BLOOOOO11", 35.00, "https://www.nestleprofessional.com.br/sites/g/files/gfb331/f/styles/recipe/public/media/bolo-trufado-charge.jpg?itok=rgzHVFs1", listaIngre, user2, true);
+
+        Receita receita4 = new Receita("Bolo Chocolate 2", "BLOOOOO11", 35.00, "https://vovopalmirinha.com.br/wp-content/uploads/2016/05/bolo-chocolate-simples-1.jpg", listaIngre2, user2, true);
+
         receitaRepository.save(receita1);
         receitaRepository.save(receita2);
+        receitaRepository.save(receita3);
+        receitaRepository.save(receita4);
     }
 }
